@@ -1,0 +1,70 @@
+\section{Question 5}
+
+\subsection{Lemmas}
+\textbf{lemma} \textit{name}$(x_1: \textit{T}, x_2: \textit{T}, \ldots, x_n: \textit{T})$ \\
+        \tab \textbf{requires} P \\
+        \tab \textbf{ensures} R \\
+\{ \}
+
+Lemmas can be called in a method to \textbf{prove} the lemmas property from that point onwards.
+
+\subsubsection{Weakest Precondition}
+\textbf{wp}(M(E), Q)  =  \verb!P[x\E] && (R[x\E] ==> Q)!
+
+\subsubsection{Calc}
+To prove a lemma by hand, you can add a \textbf{calc} section into the lemmas body, where \textit{$\gamma$} is the default transitive operator between lines. \\
+$\textbf{calc} \, \textit{$\gamma$} \, \{$ \\
+$\tab    5*(x + 3);$ \\
+$\tab == 5*x + 5*3;$ \\
+$\tab == 5x + 15;$ \\
+$\}$
+
+You can use use any transitive operator between lines (e.g. $==>$). If no default operator is specific, the default is $==$.
+
+The \textbf{calc} statements can also be added inline within a method instead of creating and calling a lemma.
+
+\subsubsection{Induction}
+Lemmas can also be used to prove using induction by recursively calling the lemma in the body. E.g. \\
+\textbf{lemma} SumLemma(a: \textit{array<int>}, i: \textit{int}, j: \textit{int}) \\
+        \tab \textbf{requires} P \\
+        \tab \textbf{ensures} R \\
+\{ \\
+        \tab if i == j \{\} // base case: Dafny can prove\\
+        \tab else \{\\
+        \tab    \tab SumLemma(a, i+1, j); // inductive case\\
+        \tab \}\\
+\}
+
+\subsection{Functional Programming}
+Key features:
+\begin{itemize}
+        \item Program structures as mathematical functions
+        \item Data is immutable (i.e. no heap, no side effects)
+\end{itemize}
+
+\subsubsection{Match}
+
+\textbf{Match} is dafny's version of a switch statement, but it must cover all cases.\\
+\tab \textbf{match} $x$\\
+\tab \textbf{case} $c_1$\\
+\tab \textbf{case} $c_2$\\
+\tab \ldots\\
+\tab \textbf{case} $c_n$\\
+
+\subsubsection{Descriminators}
+Discriminators can be used to check if a variable is a given type. E.g. xs.Nil\textbf{?} checks if xs is type Nil.
+
+\subsubsection{Destructors}
+Destructors are used to access data in a composite datatype. E.g. for a variable xs of the datatype\\
+\textbf{datatype} \verb!List<T>! = Nil | Cons(head: T, tail: \verb!List<T>!),\\
+head can be accessed using xs.head. Similarly tail can be accessed using xs.tail.
+
+\subsubsection{Instrinsic vs Extrinsic Property}
+\begin{itemize}
+        \item An intrinsic property is a property defined within a specification.
+        \item An extrinsic property is a property defined externally using a lemma.
+        \item Methods in Dafny are opaque, so all properties in the specification are intrinsic.
+        \item Functions are transparent, so properties can be intrinsic or extrinsic.
+        \item Intrinsic properties are available every time we apply a function, whereas extrinsic properties are only available if we call the lemma.
+        \item Having all properties exposed instrinsicly can lead to long verification times, so only define properties intrinsicly if they will be required for all applications of the function.
+\end{itemize}

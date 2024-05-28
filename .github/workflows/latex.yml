@@ -1,0 +1,36 @@
+name: Compile LaTeX document
+on: 
+  workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-20.04
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v2
+
+            - name: Compile LaTeX document
+              uses: xu-cheng/latex-action@v2
+              with:
+                  latexmk_shell_escape: true
+                  root_file: main.tex
+
+            - name: Rename PDF
+              run: mv main.pdf cribsheet.pdf
+
+            - name: Upload PDF
+              uses: actions/upload-artifact@v2
+              with:
+                  name: PDF
+                  path: cribsheet.pdf
+
+            - name: Commit and push PDF
+              run: |
+                  git config --local user.email "action@github.com"
+                  git config --local user.name "GitHub Action"
+                  git add -f cribsheet.pdf
+                  git commit -m "Add generated PDF" -a
+                  git push origin ${GITHUB_REF#refs/heads/}
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

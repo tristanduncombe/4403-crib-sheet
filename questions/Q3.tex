@@ -1,0 +1,64 @@
+\section{Question 3}
+\subsection{Termination Metrics}
+Any set of values which have a \textit{well-founded} order can be used as a termination metric.
+
+An order $\succ$ is well-founded when
+\begin{itemize}
+    \item $\succ$ is irreflexive: a $\succ$ a never holds
+    \item $\succ$ is transitive:\\
+        \tab a $\succ$ b \&\& b $\succ$ c $\implies$ a $\succ$ c
+    \item there is no infinite descending chain\\
+        \tab $\text{a}_1 \succ \text{a}_2  \succ \text{a}_3  \succ \dots$
+\end{itemize}
+
+We write X decreases to x as $X \succ x$.
+
+For integers, $X \succ x$ when X > x \&\& X >= 0. \\
+For booleans, $X \succ x$ when X \&\& !x.
+
+A termination metric for a recursive function is a metric that can be proven to decrease every iteration.
+
+E.g. for the function;
+\begin{verbatim}
+    function F(x: int): int 
+    { 
+        if x < 10 then x else F(x – 1)
+    }
+\end{verbatim}
+the termination metric would be x since $x \succ x - 1$.
+
+\subsubsection{Lexicographic tuples}
+A lexicographic order is a component-wise comparison where earlier components are more significant.
+
+$\{\text{a}_0, \text{a}_1, \text{a}_2, \dots, \text{a}_n\} \succ \{\text{b}_0, \text{b}_2, \text{b}_3, \dots, \text{b}_n\}$ if and only if\\
+$\text{a}_0 \succ \text{b}_0\ ||\ (\text{a}_0 == \text{b}_0$ \&\& $\text{a}_1 \succ \text{b}_1)\ ||$\\
+$\tab (\text{a}_0 == \text{b}_0$ \&\& $\text{a}_1 == \text{b}_1$ \&\&\\
+$\tab \tab \text{a}_2 \succ \text{b}_2)\ || \dots\ ||$\\
+$\tab (\text{a}_0 == \text{b}_0$ \&\& $\text{a}_1 == \text{b}_1$ \&\& $\dots$ \&\&\\
+$\tab \tab \text{a}_{n-1} == \text{b}_{n-1}$ \&\& $\text{a}_n \succ \text{b}_n)$
+
+A lexicographic ordering allows tuples to be used as termination metrics. 
+
+\subsubsection{Mutually Recursive Functions}
+Tuples can be used to provide termination metrics for mutually recursive functions since you can provide multiple values that the functions may reduce on.
+
+E.g. for the following methods;
+\begin{verbatim}
+    method F(i: nat) returns (r: nat) { 
+        if i <= 2 { r := 1; } 
+        else {
+            var h := H(i - 2);
+            r := 1 + h; 
+        } 
+    } 
+
+    method H(i: nat) returns (r: nat) { 
+        if i == 0 { r := 0; } 
+        else { 
+            var f := F(i); 
+            var h := H(i - 1); 
+            r := f + h; 
+        } 
+    }
+\end{verbatim}
+the termination matrix would be \{i, 1\} for H and \{i, 0\} for F since the call F(i) in H will reduce on 1 $\succ$ 0. 

@@ -1,0 +1,89 @@
+\section{Question 2}
+\subsection{Loop Design Techniques}
+\subsubsection{Look in the postcondition.}
+For a postcondition A \&\& B,
+choose the invariant to be A and the guard to be !B.
+\begin{verbatim}
+method SquareRoot(N: nat) returns (r: nat)
+ensures r*r <= N && N < (r + 1)*(r + 1)
+    { { 0 <= N }
+    { 0*0 <= N}
+    r := 0;
+    { r*r <= N }
+    while (r + 1)*(r + 1) <= N
+    invariant r*r <= N
+    {
+        { (r + 1)*(r + 1) <= N 
+                && r*r <= N } (strengthen)
+        { (r + 1)*(r + 1) <= N }
+        r := r + 1;
+        { r*r <= N }
+    }
+}
+\end{verbatim}
+
+\subsubsection{Programming by wishing}
+If a problem can be made simpler by having a
+precomputed quantity Q, then introduce a new
+variable q with the intention of establishing and
+maintaining the invariant q == Q
+
+\begin{verbatim}
+method SquareRoot(N: nat) returns (r: nat)
+ensures r*r <= N < (r + 1)*(r + 1)
+{
+    r := 0;
+    var s := 1;
+    while s <= N
+    invariant r*r <= N
+    invariant s == (r + 1)*(r + 1)
+    {
+        s := s + 2*r + 3;
+        r := r + 1;
+    }
+}
+\end{verbatim}
+
+\subsubsection{Replace a constant by a variable}
+For a loop to establish a condition P(C), where C is an
+expression that is held constant throughout the loop,
+use a variable k that the loop changes until it equals C,
+and make P(k) a loop invariant.
+
+For example, Min method (Week 4) had postcondition
+\begin{verbatim}
+    ensures forall i :: 0 <= i < a.Length ==>
+                                        m <= a[i]
+\end{verbatim}
+and invariant
+\begin{verbatim}
+    invariant forall i :: 0 <= i < n ==> m <= a[i]
+\end{verbatim}
+
+\subsubsection{What's yet to be done}.
+If you're trying to solve a problem of the form
+p == F(n), replacement of a constant by a variable
+results in a what-has-been-done invariant
+\begin{verbatim}
+    invariant p == F(i)
+\end{verbatim}
+Alternatively, you may use a what's-yet-to-be-done
+invariant
+
+\begin{verbatim}
+    invariant p @ F(n – i) == F(n)
+\end{verbatim}
+where @ is some kind of combination operation.
+
+\subsubsection{Use the postcondition}
+To establish a postcondition Q, make Q a loop
+invariant.
+
+For the Min example, to ensure the postcondiVon
+\begin{verbatim}
+ensures exists i :: 0 <= i < a.Length && m == a[i]
+\end{verbatim}
+we used the invariant
+\begin{verbatim}
+invariant exists i :: 0 <= i < a.Length && m == a[i]
+\end{verbatim}
