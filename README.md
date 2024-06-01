@@ -1,3 +1,3 @@
-# 3100 Crib Sheet
+# 4403 Crib Sheet
 
-CSSE3100 Crib Sheet built from [this template](https://wch.github.io/latexsheet/)
+COMP4403 Crib Sheet built from [this template](https://wch.github.io/latexsheet/)
