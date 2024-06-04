@@ -1,0 +1,40 @@
+\subsection{Parsing Theory}
+
+\subsubsection{Context Free Grammars}
+
+Basic Example of Context Free Grammar
+
+$E \rightarrow E \ Op \ E $ \\
+$E \rightarrow "(" E ")"$ \\
+$E \rightarrow number$ \\
+$Op \rightarrow "+"$ \\
+$Op \rightarrow "-"$ \\
+$Op \rightarrow "*"$ \\
+Has start symbol $E$, nonterminals $\{E, Op\}$, and terminals
+$\{“(”, “)”, number , “+”, “-”, “*”\}$
+
+A context-free grammar consists of:
+\begin{itemize}
+\item A finite set, $\sum$,  of terminal symbols.
+\item A finite nonempty set of nonterminal symbols (disjoint from the terminal symbols).
+\item A finite nonempty set of producions of the form of $A \rightarrow \alpha$, where $A$ is a nonterminal symbol, and $\alpha$ is a possibly empty sequence of symbols, each of which is either a terminal of nonterminal symbol.
+\item A start symbol that must be a nonterminal symbol
+\end{itemize}
+
+\subsubsubsection{Directly Derives}
+If there is a production in the form of $N \rightarrow \gamma$ then we can directly derive $\alpha \ N \beta \ \rightarrow \alpha \ \gamma \ \beta$, where $\alpha$ and $\beta$ are possibly empty sequences of terminal and nonterminal symbols.
+
+\subsubsubsection{Derives}
+Given a sequence of terminal and nonterminal symbols, $\alpha$, derives a sequence $\beta$, written $\alpha \stackrel{*}{\Rightarrow} \beta$ if there is a finitie sequence of zero or more direct derivation steps that start from $\alpha$ and finishing with $\beta$, there must be one or more sequence $\gamma_1, \gamma_2, \ldots, \gamma_n$ such that $\alpha = \gamma_0 \Rightarrow \gamma_1 \Rightarrow \ldots \Rightarrow \gamma_n = \beta$. Note that zero steps are allowed.
+
+\subsubsubsection{Nullable}
+A possibly empty sequence of symbols, $\alpha$, is nullable if  $\alpha \stackrel{*}{\Rightarrow} \epsilon$ or $\alpha \stackrel{*}{\Rightarrow}$
+Nullable rules
+\begin{itemize}
+        \item $\epsilon is nullable$
+        \item any terminal symbol is not nullable
+        \item a sequence of symbols is nullable if all of its constructs are nullable
+        \item a set of alternatives is nullable if any of its constructs are nullable
+        \item EBNF constructs for optionals and repetitions are nullable
+        \item a nonterminal is nullable if there is a production with a nullable right-hand side
+\end{itemize}
