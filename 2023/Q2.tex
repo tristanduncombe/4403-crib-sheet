@@ -1,0 +1,41 @@
+\subsubsection{Question 2}
+\subsubsubsection{(a)}
+Write a specification for a Dafny method to reverse an array. For example, given the array
+[1, 2, 3, 4, 5] the method will change it to [5, 4, 3, 2, 1]. Note that the method should modify an
+existing array, not create a new one.
+
+\begin{verbatim}
+method Reverse(a: array)
+  modifies a
+  ensures forall i :: 0 <= i < a.Length ==>
+                        a[i] == old(a[a.Length-1-i])
+\end{verbatim}
+
+\subsubsubsection{(b)}
+
+Based on your specification, provide a loop specification (guard and invariant) for the
+Reverse method, and code to initialise the loop variables.
+
+\begin{verbatim}
+var n := 0;
+while n < a.Length/2
+  invariant 0 <= n <= a.Length/2
+  invariant forall i :: 0 <= i < n
+                ==> a[i] == old(a[a.Length-1-i])
+  invariant forall i :: a.Length-n <= i < a.Length
+                ==> a[i] == old(a[a.Length-1-i])
+  invariant forall i :: n <= i < a.Length-n 
+                ==> a[i] == old(a[i])
+\end{verbatim}
+The second and third invariants are instances of the Replace a Constant by a Variable loop
+design technique. In the second invariant, the constant a.Length is replaced by n. In the third
+invariant, the constant 0 is replaced by a.Length-n.
+The final invariant states that nothing between indices n and a.Length-n have been changed by
+the loop. This is similar to the additional invariant we required for the IncrementArray example
+in Week 5.
+
+\subsubsubsection{(c)}
+Provide a termination metric for the loop.
+\begin{verbatim}
+decreases a.Length/2 - n
+\end{verbatim}

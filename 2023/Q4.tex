@@ -1,0 +1,67 @@
+
+\subsubsection{Question 4}
+\subsubsection{(a)}
+Provide variable declarations representing the abstract and concrete states of the class.
+Assume that the class has a generic parameter Event corresponding to the event type
+
+
+\begin{verbatim}
+// abstract
+ghost var schedule: seq<Event>
+ghost var additions: seq<Event>
+ghost const n: nat
+ghost var Repr: set<object>
+// concrete
+var events: array<Event>
+var m: int
+var n: int
+\end{verbatim}
+
+\subsubsection{(b)}
+Provide a class invariant, Valid, for the class.
+
+\begin{verbatim}
+ghost predicate Valid( )
+    reads this, Repr
+    ensures Valid( ) ==> this in Repr 
+                && |schedule| + |additions| <= N &&
+    forall i, j :: 0 < = i < j
+                < |schedule+additions| ==>
+    (schedule + additions)[i]
+                != (schedules + additions)[j]
+{
+    this in Repr && a in Repr &&
+    0 <= m <= n <= a.Length && a.Length == N &&
+    a[..m] == schedule && a[m..n] == additions &&
+    forall i, j :: 0 <= i < j < n ==> a[i] != a[j]
+}
+\end{verbatim}
+
+\subsubsection{(c)}
+
+\begin{verbatim}
+constructor (N : int)
+    ensures Valid( ) && fresh(Repr)
+    ensures schedule == [ ] && additions == [ ]
+            && this.N == N
+method AddEvent(e: Event)
+    requires Valid( ) && e !in schedule
+            && e !in additions 
+            && |schedule + additions| < N
+    modifies Repr
+    ensures Valid( ) && fresh(Repr - old(Repr))
+    ensures additions == old(additions) + [e]
+            && schedule == old(schedule)
+method Commit( )
+    requires Valid( )
+    modifies Repr
+    ensures Valid( ) && fresh(Repr - old(Repr))
+    ensures additions == [] && schedule ==
+            old(schedule + additions)
+method Abort( )
+    requires Valid( )
+    modifies Repr
+    ensures Valid( ) && fresh(Repr - old(Repr))
+    ensures additions == []
+            && schedule == old(schedule)
+\end{verbatim}

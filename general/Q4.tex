@@ -1,0 +1,102 @@
+\subsection{Question 4}
+\subsection{Classes}
+Ghost variables can be used for specification and reasoning only.
+\begin{Verbatim}[commandchars=\\\{\}]
+    ghost var \textit{d}: \textit{T}
+\end{Verbatim}
+
+\subsubsection{Simple Classes}
+A simple class consits of only simple object, (i.e. objects that are not stored on the heap).
+
+The specification for a simple class consists of:
+\begin{itemize}
+    \item ghost variables for abstract state
+    \item have class invariant, \textbf{ghost predicate Valid()}
+    \item Valid() and functions have \textbf{reads this}
+    \item constructor has \textbf{ensures Valid()}
+    \item methods have \textbf{requires Valid()}, \textbf{modifies this}, \textbf{ensures Valid()}
+\end{itemize}
+
+Concrete states that consist of only simple objects are created and are related to the abstract state in \textbf{Valid()}.
+
+The constructor, methods, and functions must satisfy the class specification and will require both concrete and abstract state to be updated.
+
+\subsubsection{Complex Classes}
+Complex classes consist of any combination of simple and complex objects, (i.e. objects that are stored on the heap).
+
+Complex classes require a representation set,
+\begin{Verbatim}[commandchars=\\\{\}]
+    \textbf{ghost var} Repr: set<object>
+\end{Verbatim}
+
+\subsubsubsection{Invariant}
+The invariant valid will consist of the following, where a, a0, a1 are non-composite objects or arrays and b, b0, b1 are composite objects.
+\begin{Verbatim}[commandchars=\\\{\}]
+    \textbf{ghost predicate} Valid()
+        \textbf{reads} this, Repr
+        \textbf{ensures} Valid() ==> this \textbf{in} Repr
+    \{ 
+        this \textbf{in} Repr && ...
+    \}
+\end{Verbatim}
+
+For an array \textbf{a}, include;
+\begin{Verbatim}[commandchars=\\\{\}]
+    a \textbf{in} Repr
+\end{Verbatim}
+
+For two identically typed arrays \textbf{a0, a1}, include;
+\begin{Verbatim}[commandchars=\\\{\}]
+    a0 != a1
+\end{Verbatim}
+
+For a non-composite object \textbf{b}, include;
+\begin{Verbatim}[commandchars=\\\{\}]
+    b \textbf{in} Repr && b.Valid()
+\end{Verbatim}
+
+For two identically typed non-composite objects \textbf{b0, b1}, include;
+\begin{Verbatim}[commandchars=\\\{\}]
+    b0 != b1
+\end{Verbatim}
+
+For a composite object \textbf{c}, include;
+\begin{Verbatim}[commandchars=\\\{\}]
+    c \textbf{in} Repr && c.Repr <= Repr && 
+    this !\textbf{in} c.Repr && c.Valid()
+\end{Verbatim}
+
+For a composite objects \textbf{c0, c1} and non-composite objects and arrays \textbf{a0, a1, b0, b1}, include;
+\begin{Verbatim}[commandchars=\\\{\}]
+    \{a0, a1, b0, b1\} !! c0.Repr !! c1.Repr  
+\end{Verbatim}
+
+\subsubsubsection{Constructor}
+For a non-composite array or object \textbf{a} and a composite object \textbf{b}.
+\begin{Verbatim}[commandchars=\\\{\}]
+\textbf{constructor}()
+    \textbf{ensures} Valid() && \textbf{fresh}(Repr)
+    \textbf{ensures} \dots \textit{(initial abstract state)}
+\{
+    ... \textit{(initialise concrete and abstract state)}
+    \textbf{new};
+    Repr := \{this, a, b\} + b.Repr;
+\}
+\end{Verbatim}
+
+\subsubsubsection{Functions}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \textbf{function} F(x:X): Y()
+        \textbf{requires} Valid() && \dots
+        \textbf{reads} Repr
+        \textbf{ensures} F(x) == \dots \textit{(abstract state)}
+\end{Verbatim}
+
+\subsubsubsection{Methods (Mutating)}
+\begin{Verbatim}[commandchars=\\\{\}]
+    \textbf{method} M(x:X) returns Y()
+        \textbf{requires} Valid() && \dots
+        \textbf{modifies} Repr
+        \textbf{ensures} Valid() && \textbf{fresh}(Repr - \textbf{old}(Repr))
+        \textbf{ensures} \dots \textit{(resultant abstract state)}
+\end{Verbatim}

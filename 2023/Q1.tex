@@ -1,0 +1,66 @@
+\subsubsection{Question 1}
+Provide weakest precondition proofs to determine whether or not the following methods
+satisfy their specifications.
+\subsubsubsection{(a)}
+\begin{verbatim}
+method M(x: int) returns (r: int)
+  requires x >= -2
+  ensures r >= 1
+{
+    { x == -2 || x >= 0 }
+    { x + 1 == -1 || x + 1 >= 1 }
+    r := x + 1;
+    { r == -1 || r >= 1}
+    { (r < 0 && r >= -1) || (r >= 0 && r >= 1) }
+    { (r < 0 ==> r >= -1) && (r >= 0 ==> r >= 1) }
+    if r < 0 {
+        { r >= -1 }
+        { r + 2 >= 1 }
+        r := r + 2;
+        { r >= 1}
+    }
+    { r >= 1}
+}
+
+Not correct since !(x >= -2 ==> x == -2 || x >= 0)
+        since x >= -2 allows x to be -1.
+\end{verbatim}
+\subsubsubsection{(b)}
+\begin{verbatim}
+method B(x: int, y: int) returns (r: int)
+requires x >= 0 && y >= 0
+ensures r == x * y
+
+
+method A(x: int, y: int) returns (r: int)
+  requires y >= 4
+  ensures r >= x + y
+{ 
+  {y >= 4}
+  {y >= 4 && x == x}
+  {y >= 4 && x >= x}
+  var z := x;
+  {y >= 4 && z >= x}
+  while z < 0
+    invariant y >= 4 && z >= x
+  {
+    {y >= 4 && z >= x && z < 0}
+    {y >= 4 && z + y >= x && z < 0} (Strengthening)
+    {y >= 4 && z + y >= x}
+    {y >= 4 && z + y >= x}
+    z := z + y;
+    {y >= 4 && z >= x}
+  }
+  {z >= 0 && y >= 4 && z >= x} (Strengthening)
+  {z >= 0 && y - 1 >= 0 && z * y - 1 >= x} (A.56)
+  {z >= 0 && y - 1 >= 0 && forall y' :: y'
+                        == z * y - 1 ==> y' >= x}
+  r := B(z, y - 1);
+  { r >= x}
+  { r + y >= x + y}
+  r := r + y;
+  {r >= x + y}
+}
+
+Correct since y >= 4 ==> y >= 
+\end{verbatim}

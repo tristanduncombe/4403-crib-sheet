@@ -1,0 +1,152 @@
+\subsection{Question 1}
+
+\subsubsection{Predicate Logic}
+\setlength{\tabcolsep}{0pt} 
+\begin{tabular}{@{}ll@{}}
+$ A \land (A \lor B) \equiv A \equiv A \lor (A \land B)$ & \verb! (A.6)! \\
+$ A \land (B \lor C) \equiv (A \land B) \lor (A \land C)$ & \verb! (A.7)! \\
+$ A \lor (B \land C) \equiv (A \lor B) \land (A \lor C)$ & \verb! (A.8)! \\
+$ \neg (A \land B) \equiv \neg A \lor \neg B$ & \verb! (A.18)! \\
+$ \neg (A \lor B) \equiv \neg A \land \neg B$ & \verb! (A.19)! \\
+$ A \lor (\neg A \land B) \equiv A \lor B$ & \verb! (A.20)! \\
+$ A \land (\neg A \lor B) \equiv A \land B$ & \verb! (A.21)! \\
+$ A \imp B \equiv \neg A \lor B$ & \verb! (A.22)! \\
+$ A \imp B \equiv \neg(A \land \neg B)$ & \verb! (A.24)! \\
+$ \neg(A \imp B) \equiv A \land \neg B$ & \verb! (A.25)! \\
+$ A \imp B \equiv \neg B \imp \neg A$ & \verb! (A.26)! \\
+$ C \imp (A \land B) \equiv (C \imp A) \land (C \imp B)$ & \verb! (A.33)! \\
+$ (A \lor B) \imp C \equiv (A \imp C) \land (B \imp C)$ & \verb! (A.34)! \\
+$ C \imp (A \lor B) \equiv (C \imp A) \lor (C \imp B)$ & \verb! (A.35)! \\
+$ (A \land B) \imp C \equiv (A \imp C) \lor (B \imp C)$ & \verb! (A.36)! \\
+$ A \imp (B \imp C) \equiv (A \land B) \imp C \equiv$ & \verb! (A.37)! \\
+$ B \imp (A \imp C)$ & \\
+$ (A \imp B) \land (\neg A \imp C) \equiv$ & \verb! (A.38)! \\
+$ (A \land B) \lor (\neg A \land C)$ & \\
+$ (\forall x \text{ s.t. } x = E \imp A) \equiv A[x \backslash E] \equiv $ & \verb! (A.56)! \\
+$ (\exists x \text{ s.t. } x = E \land A)$ & \\
+$ \forall x :: A \land B = (\forall x :: A) \land (\forall x :: B)$ & \verb! (A.65)! \\
+$ \forall x :: A = A$ & \verb! (A.74)! \\
+$ \tab \text{ provided } x \text{ not free in } A$ & \\
+\end{tabular}
+
+\subsubsection{Weakest Precondition}
+
+\subsubsubsection{Assignment} 
+\begin{verbatim}
+wp(x := E, Q) = Q[x\E]
+\end{verbatim}
+
+\subsubsubsection{Simultaneous Assignment} 
+\begin{verbatim}
+wp(x1, x2, ..., xN := E1, E2, ..., EN, Q)
+        = Q[x1, x2, ..., xN\E1, E2, ... EN]
+\end{verbatim}
+
+\subsubsubsection{Variable Introduction}
+\begin{verbatim}
+wp(var x, Q) = forall x :: Q
+\end{verbatim}
+Can be ignored when we have \verb!var x := E;! or \verb!var x; x := E;!
+
+\subsubsubsection{Condition}
+\begin{verbatim}
+wp(if B { S } else { T }, Q) =
+        (B ==> wp(S, Q)) && (!B ==> wp(T, Q))
+\end{verbatim}
+
+\subsubsubsection{Loops} 
+\begin{verbatim}
+{J}
+while B
+        invariant J
+{
+        {B && J}
+        ... 
+        {J}
+}
+{J && !B}
+\end{verbatim}
+E.g.
+\begin{verbatim}
+{y >= 4 && z >= x}
+while z < 0
+        invariant y >= 4 && z >= x
+{
+        {z < 0 && y >= 4 && z >= x}
+        {y >= 4 && z + y >= x}
+        z := z + y;
+        {y >= 4 && z >= x}
+}
+{z >= 0 && y >= 4 && z >= x}
+\end{verbatim}
+
+\subsubsubsection{Loops Proving Decreases} 
+\begin{Verbatim}[commandchars=\\\{\}, codes={\catcode`$=3\catcode`^=7}]
+\{J\}
+while B
+        invariant J
+        decreases D
+\{
+        \{B && J\}
+        ghost var d := D;
+        ... 
+        \{J && d $\succ$ D\}
+\}
+\{J && !B\}
+\end{Verbatim}
+
+\subsubsubsection{Methods} 
+For a generic method M,
+\begin{verbatim}
+method M(x: int, a: array<int>) returns (y: int) 
+        requires P
+        modifies a
+        ensures R
+\end{verbatim}
+the WP rule is:
+\begin{verbatim}
+wp(t := M(E, b), Q)  =  
+    P[x, a\E, b] && 
+    forall y', b' :: b'.Length = b. Length &&
+        R[x, y, a, old(a[i])\E, y', b', b[i]] 
+                ==> Q[t, b\y', b']
+\end{verbatim}
+For example.
+\begin{verbatim}
+Given:
+method Triple(x: int) returns (y: int)
+requires x >= 0
+ensures y == 3*x {}
+
+
+{ u == 15}
+{ u + 3 >= 0 &&
+        3*(u + 3) == 54 } (A.56)
+{ u + 3 >= 0 &&
+        forall y' :: y' == 3*(u + 3)
+                ==> y' == 54 }
+t := Triple(u + 3);
+{ t == 54 }
+
+\end{verbatim}
+\begin{verbatim}
+function SeqSum(s: seq<int>, lo: int, hi: int)
+                                : int
+requires 0 <= lo <= hi <= |s|
+decreases hi - lo
+{
+        if lo == hi then 0 else s[lo] +
+            SeqSum(s, lo + 1, hi)
+}
+\end{verbatim}
+
+\subsubsubsection{Lemmas}
+For a call to lemma \verb!M!, the WP rule is:
+\begin{verbatim}
+wp(M(E), Q)  =  P[x\E] && (R[x\E] ==> Q)
+\end{verbatim}
+where P is the requires class of the lemma and R is the ensures clause.
+
+\subsubsection{Old}
+In a WP proof, \verb!old(E)! can be replaced with \verb!E! 
+if there is no modifications to E above the current position in the method.
