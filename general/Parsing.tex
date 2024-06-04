@@ -38,3 +38,27 @@ Nullable rules
         \item EBNF constructs for optionals and repetitions are nullable
         \item a nonterminal is nullable if there is a production with a nullable right-hand side
 \end{itemize}
+
+\subsubsubsection{Language}
+The formal language $\pazocal{L}(G)$ corresponding to a Grammar, G, is:
+$\pazocal{L}(G) = \{t \in seq \sum | S \stararrow t \}$
+
+where S is the start symbol of $G$ and $\sum$ is its set of terminal symbols.
+
+\subsubsubsection{Sentences and Sentenial Form}
+A sequence of terminal symbols $t$ such that $S \stararrow t$ is called a \emph{sentence} of the language.
+
+\subsubsubsection{Ambiguous grammars for sequence}
+A grammar, \emph{G}, is ambiguous for a sentence, \emph{t}, in $\pazocal{L}$, if there is more than one parse tree for tree for \emph{t}.
+\subsubsubsection{Ambiguous grammars}
+A grammar, \emph{G}, is ambiguous if it is ambiguous for any setence in $\pazocal{L}(G)$.
+\subsubsubsection{Left and right associative operators}
+To remove the ambiguit and treat \emph{"-"} as  a left associate operator (as usual) we can rewrite the grammar to
+
+$E \rightarrow E \ "-" \ T$ \\
+$E \rightarrow T$ \\
+$T \rightarrow N$ \\
+and to treat \emph{"-"} as right associative we use
+$E \rightarrow T "-" E$ \\
+$E \rightarrow T$ \\
+$T \rightarrow N$ \\
