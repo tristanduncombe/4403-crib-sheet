@@ -1,0 +1,49 @@
+\subsection{Recusive-Descent Parsing}
+\subsubsection{Backus-Naur Form (BNF)}
+Allows a context-free grammar to be described by a set of productions of the form
+$N \rightarrow \alpha$
+Where $N$ is a nonterminal symbol and $\alpha$ is a (possibly empty) sequence of terminal and nonterminal symbols
+
+The set of productions:
+
+$N \rightarrow \alpha_1$ \\
+$N \rightarrow \alpha_2$ \\
+$\ldots$ \\[0.1cm]
+$N \rightarrow \alpha_n$
+
+can be wrriten as
+$N \rightarrow \alpha_1 | \alpha_2 | \ldots | \alpha_n$
+
+\subsubsection{Extended BNF (EBNF)}
+Extends BNF to allow:
+An \emph{optional} syntatic construct [in square brackets]
+$RelCondition \rightarrow Exp \ [RelOp \ Exp]$
+A \emph{reptition} construct {in curly braces}
+$StatementList \rightarrow Statement \ \{SEMICOLON \ Statement \}$
+
+The extended notation does not add any expressive power - any EBNF grammar can be converted to a BNF grammar\dots
+
+\subsubsection{Translating EBNF to BNF}
+
+Replace optional construct $[S]$ by a new nonterminal $OptS$:
+
+$OptS \rightarrow S | \epsilon$
+
+For example, we can rewrite
+
+$RelCondition \rightarrow Exp \ [RelOp \ Exp]$
+as
+
+$RelCondition \rightarrow Exp \ OptRelExp$ \\
+$OptRelExp \rightarrow RelOp \ Exp | \epsilon$
+
+Replace grouping construct ( $S$ ) by a new nonterminal $GrpS$:
+$GrpS \rightarrow S$
+
+For example, we can rewrite
+$RepF \rightarrow (TIMES \ | \ DIVIDE) \ Factor \ RepF \ | \epsilon$
+
+as 
+
+$RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon$ \\
+$TermOp \rightarrow TIMES \ | \ DIVIDE$
