@@ -11,15 +11,20 @@ $N \rightarrow \alpha_2$ \\
 $\ldots$ \\[0.1cm]
 $N \rightarrow \alpha_n$
 
-can be wrriten as
+can be writen as
 $N \rightarrow \alpha_1 | \alpha_2 | \ldots | \alpha_n$
 
 \subsubsection{Extended BNF (EBNF)}
 Extends BNF to allow:
+
 An \emph{optional} syntatic construct [in square brackets]
-$RelCondition \rightarrow Exp \ [RelOp \ Exp]$
-A \emph{reptition} construct {in curly braces}
-$StatementList \rightarrow Statement \ \{SEMICOLON \ Statement \}$
+
+$RelCondition \rightarrow Exp \ [RelOp \ Exp]$ \newline
+
+A \emph{reptition} construct {in curly braces}\newline
+
+$StatementList \rightarrow Statement \ \{SEMICOLON \ Statement \}$ \newline
+
 
 The extended notation does not add any expressive power - any EBNF grammar can be converted to a BNF grammar\dots
 
@@ -27,20 +32,20 @@ The extended notation does not add any expressive power - any EBNF grammar can b
 
 Replace optional construct $[S]$ by a new nonterminal $OptS$:
 
-$OptS \rightarrow S | \epsilon$
-
+$OptS \rightarrow S | \epsilon$ \newline
 For example, we can rewrite
-
-$RelCondition \rightarrow Exp \ [RelOp \ Exp]$
+$RelCondition \rightarrow Exp \ [RelOp \ Exp]$ \newline
 as
 
-$RelCondition \rightarrow Exp \ OptRelExp$ \\
+$RelCondition \rightarrow Exp \ OptRelExp$
 $OptRelExp \rightarrow RelOp \ Exp | \epsilon$
 
 Replace grouping construct ( $S$ ) by a new nonterminal $GrpS$:
+
 $GrpS \rightarrow S$
 
 For example, we can rewrite
+
 $RepF \rightarrow (TIMES \ | \ DIVIDE) \ Factor \ RepF \ | \epsilon$
 
 as 
