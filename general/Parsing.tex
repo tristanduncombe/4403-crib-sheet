@@ -1,18 +1,6 @@
 \subsection{Parsing Theory}
 
 \subsubsection{Context Free Grammars}
-
-Basic Example of Context Free Grammar
-
-$E \rightarrow E \ Op \ E $ \\
-$E \rightarrow "(" E ")"$ \\
-$E \rightarrow number$ \\
-$Op \rightarrow "+"$ \\
-$Op \rightarrow "-"$ \\
-$Op \rightarrow "*"$ \\
-Has start symbol $E$, nonterminals $\{E, Op\}$, and terminals
-$\{“(”, “)”, number , “+”, “-”, “*”\}$
-
 A context-free grammar consists of:
 \begin{itemize}
 \item A finite set, $\sum$,  of terminal symbols.
@@ -21,17 +9,11 @@ A context-free grammar consists of:
 \item A start symbol that must be a nonterminal symbol
 \end{itemize}
 
-\subsubsubsection{Directly Derives}
-If there is a production in the form of $N \rightarrow \gamma$ then we can directly derive $\alpha \ N \beta \ \rightarrow \alpha \ \gamma \ \beta$, where $\alpha$ and $\beta$ are possibly empty sequences of terminal and nonterminal symbols.
-
-\subsubsubsection{Derives}
-Given a sequence of terminal and nonterminal symbols, $\alpha$, derives a sequence $\beta$, written $\alpha \stackrel{*}{\Rightarrow} \beta$ if there is a finitie sequence of zero or more direct derivation steps that start from $\alpha$ and finishing with $\beta$, there must be one or more sequence $\gamma_1, \gamma_2, \ldots, \gamma_n$ such that $\alpha = \gamma_0 \Rightarrow \gamma_1 \Rightarrow \ldots \Rightarrow \gamma_n = \beta$. Note that zero steps are allowed.
-
 \subsubsubsection{Nullable}
 A possibly empty sequence of symbols, $\alpha$, is nullable if  $\alpha \stackrel{*}{\Rightarrow} \epsilon$ or $\alpha \stackrel{*}{\Rightarrow}$
 Nullable rules
 \begin{itemize}
-        \item $\epsilon is nullable$
+        \item $\epsilon$ is nullable
         \item any terminal symbol is not nullable
         \item a sequence of symbols is nullable if all of its constructs are nullable
         \item a set of alternatives is nullable if any of its constructs are nullable
@@ -39,27 +21,14 @@ Nullable rules
         \item a nonterminal is nullable if there is a production with a nullable right-hand side
 \end{itemize}
 
-\subsubsubsection{Language}
-The formal language $\pazocal{L}(G)$ corresponding to a Grammar, G, is:
-$\pazocal{L}(G) = \{t \in seq \sum | S \stararrow t \}$
-
-where S is the start symbol of $G$ and $\sum$ is its set of terminal symbols.
-
-\subsubsubsection{Sentences and Sentenial Form}
-A sequence of terminal symbols $t$ such that $S \stararrow t$ is called a \emph{sentence} of the language.
-
-\subsubsubsection{Ambiguous grammars for sequence}
-A grammar, \emph{G}, is ambiguous for a sentence, \emph{t}, in $\pazocal{L}$, if there is more than one parse tree for tree for \emph{t}.
-\subsubsubsection{Ambiguous grammars}
-A grammar, \emph{G}, is ambiguous if it is ambiguous for any setence in $\pazocal{L}(G)$.
 \subsubsubsection{Left and right associative operators}
 To remove the ambiguit and treat \emph{"-"} as  a left associate operator (as usual) we can rewrite the grammar to
 
-$E \rightarrow E \ "-" \ T$ \\
+$E \rightarrow E - T$ \\
 $E \rightarrow T$ \\
 $T \rightarrow N$ \\
 and to treat \emph{"-"} as right associative we use
-$E \rightarrow T "-" E$ \\
+$E \rightarrow T - E$ \\
 $E \rightarrow T$ \\
 $T \rightarrow N$ \\
 
