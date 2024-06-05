@@ -10,6 +10,8 @@
 \usepackage{enumitem}
 \usepackage{listings}
 \usepackage{calrsfs}
+\usepackage{enumitem}% http://ctan.org/pkg/enumitem
+\setlist[itemize]{noitemsep, topsep=0pt, leftmargin=*}
 
 \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
 \newcommand{\stararrow}{\stackrel{*}{\Rightarrow}}
@@ -42,16 +44,7 @@
 % \listoffigures \listoftables
 % \setcounter{secnumdepth}{0}
 
-
-% This sets page margins to .5 inch if using letter paper, and to 1cm
-% if using A4 paper. (This probably isn't strictly necessary.)
-% % If using another size paper, use default 1cm margins.
-\ifthenelse{\lengthtest { \paperwidth = 11in}}
-	{ \geometry{top=.20in,left=.20in,right=.20in,bottom=.20in} }
-	{\ifthenelse{ \lengthtest{ \paperwidth = 297mm}}
-		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
-		{\geometry{top=1cm,left=1cm,right=1cm,bottom=1cm} }
-	}
+\geometry{top=5mm,left=4mm,right=4mm,bottom=5mm}
 
 % Turn off header and footer
 \pagestyle{empty}
@@ -114,8 +107,10 @@
 \setlength{\multicolsep}{1pt}
 \setlength{\columnsep}{2pt}
 \setlength{\tabcolsep}{2pt}
-
-\setlength{\topsep}{1pt}\setlength{\partopsep}{2pt}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{0pt}
+\setlength{\topsep}{0pt}
+\setlength{\partopsep}{0pt}
 
 \begin{center}
      \Large{\textbf{COMP4403 Crib Sheet}} \\
@@ -126,6 +121,8 @@
 \input{./general/RDP.tex}
 
 \input{./general/First_&_Follow.tex}
+
+\input{./general/Left_Factoring_&_Left_Recursion.tex}
 
 \scriptsize
 
