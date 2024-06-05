@@ -1,0 +1,73 @@
+\subsection{First \& Follow Sets}
+
+\subsubsection{First Sets}
+The first set for a construct $\alpha$ records
+\begin{itemize}
+    \item the set of terminal symbols $\alpha$ can start with, and
+    \item if $\alpha$ is nullable, it contains the empty string $\epsilon$ to indicate that.
+\end{itemize}
+
+\subsubsubsection{Calculating First Sets}
+Let
+\begin{itemize}
+    \item $\alpha$ be a terminal symbok,
+    \item $\alpha_1,\alpha_2,\dots,\alpha_n$ be strings of (terminal and nonterminal) symbols, and
+    \item $A$ be a nonterminal symbol defined by a single production
+\end{itemize}
+\begin{align*}
+    A \rightarrow \alpha_1 | \alpha_2 | \dots | \alpha_n,
+\end{align*}
+then
+\begin{align*}
+    Fst(\epsilon) &= \{\epsilon\}\\
+    Fst(\alpha) &= \{\alpha\}\\
+    Fst(\alpha_1 | \alpha_2 | \dots | \alpha_n) &= Fst(\alpha_1) \cup Fst(\alpha_2)\\
+                                                  &\ \ \ \ \cup \dots \cup Fst(\alpha_n)\\  
+    Fst(A) &= Fst(\alpha_1 | \alpha_2 | \dots | \alpha_n)\\
+\end{align*}
+
+Let $S_1,S_2,\dots,S_n$ be (terminal or nonterminal) symbols, then
+\begin{align*}
+    F&st(S_1 S_2 \dots S_n) =\\
+    &Fst(S_1) - \{\epsilon\}\\
+    &\cup Fst(S_2) - \{\epsilon\} &&\text{if $S_1$ is nullable}\\
+    &\cup \dots\\
+    &\cup Fst(S_i) - \{\epsilon\} &&\text{if $S_1$-$S_{i-1}$ is nullable}\\
+    &\cup \dots\\
+    &\cup Fst(S_n) - \{\epsilon\} &&\text{if $S_1$-$S_{n-1}$ is nullable}\\
+    &\cup \{\epsilon\} &&\text{if $S_1$-$S_n$ is nullbale}
+\end{align*}
+
+\subsubsubsection{Calculating Algorithmically}
+Start with the first sets for all nonterminals being the empty set and note that the fisrt set for every terminal symbol, $\alpha$, is the singleton set $\{\alpha\}$.
+We then make a pass over all production in a grammer considering all atlternatives and process as follows.
+\begin{itemize}
+    \item If there is a production of the form $N \leftarrow \epsilon$, we add $\epsilon$ to the first set of $N$.
+    \item If there is a production of the form $N \leftarrow S_1 S_2 \dots S_n$, then for each $i \in 1..n$, if for all $j \in 1..i-1$, $S_j$ is nullabe, we add the current first set for $S_i$ minus $\epsilon$ to the first set for $N$.
+    \item If every construct $S_1,...,S_n$ is nullabe, we add $\epsilon$ to the first set for $N$. 
+\end{itemize}
+We repeat the the passes until no set is modified in the pass, in which case we are finished.
+\subsubsubsubsection{Example}
+\begin{align}
+    A &\leftarrow B\,x | C\\
+    B &\leftarrow C\,y | D\\
+    C &\leftarrow D\,z | \epsilon\\
+    D &\leftarrow A\,w
+\end{align}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    $A$ & $\{\}$ & $\{\epsilon\}$ & $\{\epsilon,y\}$ &  $\{\epsilon,y,w\}$ &  $\{\epsilon,y,w\}$\\
+    \hline
+    $B$ & $\{\}$ & $\{y\}$ & $\{y\}$ &  $\{y,w\}$ &  $\{y,w\}$\\
+    \hline
+    $C$ & $\{\epsilon\}$ & $\{\epsilon\}$ & $\{\epsilon,w\}$ &  $\{\epsilon,w,y\}$ &  $\{\epsilon,w,y\}$\\
+    \hline
+    $D$ & $\{\}$ & $\{w\}$ & $\{w,y\}$ &  $\{w,y\}$ &  $\{w,y\}$\\
+    \hline
+\end{tabular}
+\end{center}
+
+
+
+\subsubsection{Follow Sets}

@@ -61,20 +61,26 @@
 \renewcommand{\section}{\@startsection{section}{1}{0mm}%
                                 {-1ex plus -.5ex minus -.2ex}%
                                 {0.5ex plus .2ex}%
-                                {\normalfont\normalsize\bfseries}}
+                                {\normalfont\fontsize{12pt}{6pt}\bfseries}}
 \renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
                                 {-1explus -.5ex minus -.2ex}%
                                 {0.5ex plus .2ex}%
-                                {\normalfont\small\bfseries}}
+                                {\normalfont\fontsize{12pt}{6pt}\bfseries\underline}}
 \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
                                 {-1ex plus -.5ex minus -.2ex}%
                                 {1ex plus .2ex}%
-                                {\normalfont\footnotesize\bfseries}}                   
+                                {\normalfont\fontsize{10pt}{6pt}\bfseries}}                   
 \newcommand{\subsubsubsection}{\@startsection{subsubsection}{4}{0mm}%
                                 {-1ex plus -.5ex minus -.2ex}%
                                 {1ex plus .2ex}%
-                                {\normalfont\scriptsize\bfseries}}
-\makeatother
+                                {\normalfont\fontsize{10pt}{6pt}\bfseries\itshape}}
+                                                 
+\newcommand{\subsubsubsubsection}{\@startsection{subsubsection}{5}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\fontsize{10pt}{6pt}\itshape}}
+                                \makeatother
+
 \newcommand{\imp}{\Rightarrow}
 
 % Define BibTeX command
@@ -106,6 +112,7 @@
 \setlength{\postmulticols}{1pt}
 \setlength{\multicolsep}{1pt}
 \setlength{\columnsep}{2pt}
+\setlength{\tabcolsep}{2pt}
 
 \setlength{\topsep}{1pt}\setlength{\partopsep}{2pt}
 
@@ -114,6 +121,8 @@
 \end{center}
 
 \input{./general/Parsing.tex}
+
+\input{./general/First_&_Follow.tex}
 
 \scriptsize
 
