@@ -71,3 +71,80 @@ We repeat the the passes until no set is modified in the pass, in which case we 
 
 
 \subsubsection{Follow Sets}
+The follow set for a nonterminal, $N$, is the set of terminal symbols that may follow $N$ in any context within the grammar.
+End-of-file is represented by the special terminal symbol $\$$ in which $a$ follows $N$.
+
+A nonterminal, $N$, is followed by a terminal symbol, $a$, if there is a derivation from $S\$$
+
+\subsubsubsection{Calculating Follow Sets}
+We compute the Follow set for a nonterminal, $N$, using two rules.
+\begin{itemize}
+    \item If there is a production of the form
+    \begin{align*}
+        A \rightarrow \alpha N \beta
+    \end{align*}
+    then any symbols that can start $\beta$ can follow $N$, and hence $Follow(N)$ must include all the terminal symbols in $First(\beta)$. Note that $\epsilon$ is not included even if it appears in $First(\beta)$.
+    \begin{align*}
+        First(\beta) - \{\epsilon\} \subseteq Follow(N)
+    \end{align*}
+    \item If there is a production of the form
+    \begin{align*}
+        A \rightarrow \alpha N \beta
+    \end{align*}
+    and $\beta$ is nullable, then any token that can follow $A$ can also follow $N$. Hence,
+    \begin{align*}
+        Follow(A) \subseteq Follow(N)
+    \end{align*}
+    The case where $\beta$ is nullable includes the case when $\beta$ is empty and the production is of the form
+    \begin{align*}
+        A \rightarrow \alpha N
+    \end{align*}
+\end{itemize}
+
+\subsubsubsection{Calculating Algorithmically}
+Start with all nonterminal symbols having an empty follow set, $\{\}$, except for the start symbol, $S$, which has the follow set $\{\$\}$.
+
+We make a pass through the grammar examining the right side of every production. 
+For each occurence of a nonterminal within the right side of some production, 
+we augment the Follow set for that nonterminal according to the following process. 
+Assume we are processing an occurence of $N$ and the production is of the form
+\begin{align*}
+    A \rightarrow \alpha N \beta
+\end{align*}
+we add $First(\beta) - \{\epsilon\}$ to the Follow set computer for $N$ so far, 
+and if $\beta$ is nullable, we also add the current Follow set for $A$ to the Follow set for $N$.
+
+After making a complete pass, we repeat the process with the Follow sets computed so far until no Follow sets are modified, in which case we are done.
+\subsubsubsubsection{Example}
+\begin{equation*}
+    \begin{aligned}[c]
+        S &\rightarrow x A B\\
+        A &\rightarrow y | z B\\
+        B &\rightarrow \epsilon | A x
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        Fst(S) &= \{x\}\\
+        Fst(A) &= \{y, z\}\\
+        Fst(B) &= \{\epsilon, y, z\}
+    \end{aligned}
+\end{equation*}
+
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        $S$ & $\{\$\}$ & $\{\$\}$ & $\{\$\}$ & $\{\$\}$\\
+        \hline
+        $A$ & $\{\}$ & $\{y,z,\$,x\}$ & $\{y,z,\$,x\}$ & $\{y,z,\$,x\}$\\
+        \hline
+        $B$ & $\{\}$ & $\{\$,y,z\}$ & $\{\$,y,z,x\}$ & $\{\$,y,z,x\}$\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\subsubsection{LL(1) Grammar}
+A BNF grammer is LL(1) if for each nonterminal, $N$, wher $N \rightarrow \alpha_1 | \alpha_2 | \dots | \alpha_n$,
+\begin{itemize}
+    \item the First sets for each pair of alternatives for $N$ are disjoint, and
+    \item if $N$ is nullable, $First(N)$ and $Follow(N)$ are disjoin.
+\end{itemize}
