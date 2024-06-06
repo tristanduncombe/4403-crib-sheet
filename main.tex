@@ -11,6 +11,9 @@
 \usepackage{listings}
 \usepackage{calrsfs}
 \usepackage{enumitem}% http://ctan.org/pkg/enumitem
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
 \setlist[itemize]{noitemsep, topsep=0pt, leftmargin=*}
 
 \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
@@ -77,6 +80,8 @@
 
 \newcommand{\imp}{\Rightarrow}
 
+\newcommand{\image}[1]{\includegraphics[width=\columnwidth]{#1}}
+
 % Define BibTeX command
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -119,6 +124,8 @@
 \input{./general/RDP.tex}
 
 \input{./general/First_&_Follow.tex}
+
+\input{./general/Bottom_Up_Parsing.tex}
 
 \input{./general/Left_Factoring_&_Left_Recursion.tex}
 
