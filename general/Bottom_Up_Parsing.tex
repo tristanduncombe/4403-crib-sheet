@@ -32,3 +32,186 @@ An LR(0) parsing automaton consists of
     \item transitions between states, each of which is labelled by a transition symbol.
 \end{itemize}
 Each state in an LR(0) parsing automaton must have only one associated parsing action.
+
+\subsubsubsubsection{Automaton States}
+If a state has an LR(0) item of the form
+\begin{align*}
+    N &\rightarrow \alpha \bullet M \beta \\
+\end{align*}
+where the nonterminal $M$ has productions
+\begin{align*}
+    M &\rightarrow \alpha_1 \\
+    M &\rightarrow \alpha_2 \\
+    &\vdots \\
+    M &\rightarrow \alpha_m \\
+\end{align*}
+then the state also includes the derived items
+\begin{align*}
+    M &\rightarrow \bullet \alpha_1 \\
+    M &\rightarrow \bullet \alpha_2 \\
+    &\vdots \\
+    M &\rightarrow \bullet \alpha_m
+\end{align*}
+
+\subsubsubsubsection{Goto States}
+If a state $s_i$ has an LR(0) item of the form
+\begin{align*}
+    N \rightarrow \alpha \bullet x \beta
+\end{align*}
+where $x$ is either a terminal symbol or a nonterminal symbol, then there is a goto state, 
+$s_j$, from the state $s_1$ on $x$, and $s_j$ includes a kernel item of the form
+\begin{align*}
+    N \rightarrow \alpha x \bullet \beta
+\end{align*}
+If there are multiple items in $s_i$ with the same $x$ immediately to the right of the 
+$\bullet$ then the goto state $s_j$ includes all those items but with the $\bullet$ after 
+that occurence of $x$ rather than before it.
+
+\subsubsubsubsection{Actions}
+An LR(0) item of the form
+\begin{itemize}
+    \item $N \rightarrow \alpha \bullet a \beta$ where $a$ is a terminal symbol, indicates 
+    the state containing the item has a shift  \textbf{parsing} action
+    \item $S' \rightarrow S \bullet$ where $S'$ is the (introduced) start symbol for the 
+    grammer, inidcates the state containing the item has an  \textbf{accept} action
+    \item $N \rightarrow \alpha \bullet$ where $N$ is not the (introduced) start symbol for 
+    the grammar, indicates the state containing the item has a parsing action 
+    \textbf{reduce $N \rightarrow \alpha$}
+\end{itemize}
+A shift action at end-of-file is an error, as is an accept action when the input is not at 
+end-of-file.
+
+\subsubsubsubsection{Example}
+\begin{equation*}
+    \begin{aligned}[c]
+        S \rightarrow A
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        A \rightarrow (\ A\ )
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        A \rightarrow a
+    \end{aligned}
+\end{equation*}
+\image{LR(0) Automaton Example.png}
+\begin{center}
+    \begin{tabular}{|lr|l|}
+        \hline
+        Parsing stack \hspace{0.5cm} & Input & Parsing action \\
+        \hline
+        \$0 & ((a))\$ & shift \\
+        \$0(2 & (a))\$ & shift \\
+        \$0(2(2 & a))\$ & shift \\
+        \$0(2(2a3 & ))\$ & reduce $A \rightarrow a$ \\
+        \$0(2(2A4 & ))\$ & shift \\
+        \$0(2(2A4)5 & )\$ & reduce \( A \rightarrow (A)\) \\
+        \$0(2A4 & )\$ & shift \\
+        \$0(2A4)5 & \$ & reduce \( A \rightarrow (A)\) \\
+        \$0A1 & \$ & accept \\
+        \hline
+    \end{tabular}
+\end{center}
+
+
+\subsubsubsubsection{Parsing Conflicts}
+If a state in an LR(0) parsing automaton has more than one action, 
+there is a parsing action conflict.
+
+A grammar is LR(0) if none of the states in its LR(0) parsing 
+automaton contains a parsing action conflict.
+
+\subsubsubsection{LR(1) Grammars}
+An LR(1) parsing item is a pair
+\begin{align*}
+    [N \rightarrow \alpha \bullet \beta, T]
+\end{align*}
+consisting of
+\begin{itemize}
+    \item an LR(0) parsing item $N \rightarrow a \bullet \beta$, and
+    \item a set $T$ of terminal symbols called a look-ahead set.
+\end{itemize}
+The above item indicates that in matchin $N$, $\alpha$ has been matched and $\beta$ is yet 
+to be matched, in a context in which $N$ can be followed by a terminal symbol in the set $T$.
+
+\subsubsubsubsection{Parsing Automaton}
+The kernal item of the initial state is
+\begin{align*}
+    [S' \rightarrow \bullet S, \$]
+\end{align*}
+where $S$ is the start symbol of the grammar and we introduce a fresh replacement start 
+symbol $S'$ and production $S' \rightarrow S$. This fresh production is used to determine 
+when parsing has completed.
+
+\subsubsubsubsection{Derived Items}
+If a state has an LR(1) item of the form
+\begin{align*}
+    [N \rightarrow \alpha \bullet M \beta, T]
+\end{align*}
+where the nonterminal M has productions
+\begin{align*}
+    M \rightarrow \alpha_1 | \alpha_2 | \dots | \alpha_m
+\end{align*}
+and $T = \{a_1, a_2, \dots, a_n\}$, then the state also includes the derived items
+\begin{align*}
+    [N \rightarrow \bullet \alpha_1, T]
+    \dots
+    [N \rightarrow \bullet \alpha_m, T]
+\end{align*}
+where if $\beta$ is not nullable $T' = First(\beta)$ and if $\beta$ is nullable, 
+$T' = First(\beta) - \{\epsilon\} \cup T$.
+
+\subsubsubsubsection{Parsing Actions}
+An LR(1) item of the form
+\begin{itemize}
+    \item $[N \rightarrow \alpha \bullet a \beta, T]$, where $a$ is a terminal symbol, 
+    indicates the state containing the item has a \textbf{shift} parsion action if the
+    next input $x$ is $a$
+    \item $[S' \rightarrow \S \bullet, \$]$, where $S'$ is the added start symbol for 
+    the grammar, indicates the state containing the item has an \textbf{accept} action 
+    if there is no more input.
+    \item $[N \rightarrow \alpha \bullet, T]$, where $N$ is not $S'$, indicates the state 
+    containing the item has a parsing action \textbf{reduce $N \rightarrow \alpha$} if 
+    the next input $x$ is in $T$.
+\end{itemize}
+
+\subsubsubsubsection{Example}
+\begin{equation*}
+    \begin{aligned}[c]
+        S \rightarrow E
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        E \rightarrow E + n
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        E \rightarrow n
+    \end{aligned}
+\end{equation*}
+\image{LR(1) Automaton Example.png}
+
+\subsubsubsubsection{Parsing Action Conflicts}
+If a state in an LR(1) parsing automaton has more than one action for a look-ahead 
+terminal symbol, there is a parsing action conflict.
+
+A grammar is LR(1) if none of the states in its LR(1) parsing automaton contains a parsing
+action conflict.
+
+
+\subsubsubsection{LALR(1) Parsing}
+\begin{itemize}
+    \item Look-Ahead merged LR(1) parsing where each state of an LALR(1) parsing automaton 
+    consists of a set of LR(1) items.
+    \item An LALR(1) parsing automaton can be formed from an LR(1) parsing automaton by 
+    merging states that have identical sets of LR(0) items but possibly different look-ahead 
+    sets.
+    \item Each item in the merged state consists of one of the LR(0) items in the states 
+    being merged with a look-ahead set that is the union of the look-ahead sets of that item 
+    in all the states being merged.
+    \item The parsing actions for LALR(1) parsing are defined in the same way as for LR(1) 
+    parsing.
+    \item A grammar is LALR(1) if none of the states in its LALR(1) parsing automaton contains 
+    a parsing action conflict.
+\end{itemize}

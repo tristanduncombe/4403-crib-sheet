@@ -11,6 +11,9 @@
 \usepackage{listings}
 \usepackage{calrsfs}
 \usepackage{enumitem}% http://ctan.org/pkg/enumitem
+\usepackage{graphicx}
+
+\graphicspath{ {./images/} }
 \setlist[itemize]{noitemsep, topsep=0pt, leftmargin=*}
 
 \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
@@ -76,6 +79,8 @@
                                 \makeatother
 
 \newcommand{\imp}{\Rightarrow}
+
+\newcommand{\image}[1]{\includegraphics[width=\columnwidth]{#1}}
 
 % Define BibTeX command
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
