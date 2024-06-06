@@ -1,26 +1,5 @@
 \subsection{Parsing Theory}
 
-\subsubsection{Context Free Grammars}
-A context-free grammar consists of:
-\begin{itemize}
-\item A finite set, $\sum$,  of terminal symbols.
-\item A finite nonempty set of nonterminal symbols (disjoint from the terminal symbols).
-\item A finite nonempty set of producions of the form of $A \rightarrow \alpha$, where $A$ is a nonterminal symbol, and $\alpha$ is a possibly empty sequence of symbols, each of which is either a terminal of nonterminal symbol.
-\item A start symbol that must be a nonterminal symbol
-\end{itemize}
-
-\subsubsubsection{Nullable}
-A possibly empty sequence of symbols, $\alpha$, is nullable if  $\alpha \stackrel{*}{\Rightarrow} \epsilon$ or $\alpha \stackrel{*}{\Rightarrow}$
-Nullable rules
-\begin{itemize}
-        \item $\epsilon$ is nullable
-        \item any terminal symbol is not nullable
-        \item a sequence of symbols is nullable if all of its constructs are nullable
-        \item a set of alternatives is nullable if any of its constructs are nullable
-        \item EBNF constructs for optionals and repetitions are nullable
-        \item a nonterminal is nullable if there is a production with a nullable right-hand side
-\end{itemize}
-
 \subsubsubsection{Left and right associative operators}
 To remove the ambiguit and treat \emph{"-"} as  a left associate operator (as usual) we can rewrite the grammar to
 
@@ -31,6 +10,3 @@ and to treat \emph{"-"} as right associative we use
 $E \rightarrow T - E$ \\
 $E \rightarrow T$ \\
 $T \rightarrow N$ \\
-
-\subsubsubsection{Dangling Else}
-Dangling else is a problem that arises when we have an if-then-else statement and the else is ambiguous as to which if it belongs to.
