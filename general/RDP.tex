@@ -24,18 +24,8 @@ as
 $RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon$ \\
 $TermOp \rightarrow TIMES \ | \ DIVIDE$
 
-\subsubsection{Recursive-descent parsing}
-A recursive-descent parser is a recursive program to recognise sentences in a language:
-\begin{itemize}
-    \item Input is a stream of lexical tokens, represented by tokens of type TokenStream. 
-    \item Each nonterminal symbol $N$ has a method $parseN$ that:
-    \begin{itemize}
-        \item recognises the longest string of lexcial tokens in the input stream, starting from the current token, derivable from $N$;
-        \item as it parses the input it moves the current location forward;
-        \item when it has finished parsing N, the current token is the token immediately following the last token matched as part of $N$ (which may be at the end-of-file token).
-    \end{itemize}
-\end{itemize}
-
 \subsubsection{parsing example}
-\emph{Write parsing example here}
-\vspace*{7cm}
+\vspace*{6.5cm}
+
+\vspace*{0.3cm}
+\newblock
