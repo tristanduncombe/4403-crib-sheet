@@ -1,3 +1,34 @@
 \subsection{Bottom Up Parsing}
 
-\subsubsection{First Sets}
+\subsubsection{Shift/Reduce Parsing}
+Makes use of a parse stack and has three actions:
+\begin{itemize}
+    \item \textbf{shift} - push the next input symbol onto the stack,
+    \item \textbf{reduce} - if a sequence of symbols on the top of the stack, $\alpha$, 
+    matches the right side of some production $N \rightarrow \alpha$, then the sequence 
+    $\alpha$ on top of the stack is replaced by $N$.
+    \item \textbf{accept} - if the stack contains just the start symbol and there is no
+    input left, the input has been recognised and is accepted.
+\end{itemize}
+
+\subsubsubsection{LR(0) Grammars}
+An LR(0) parsing item is of the form
+\begin{align*}
+    N \rightarrow \alpha \bullet \beta
+\end{align*}
+which indicates that, in matching $N$, $\alpha$ has been matched and $\beta$ is yet to 
+be matched where
+\begin{itemize}
+    \item $N$ is a nonterminal symbol,
+    \item $\alpha$ and $\beta$ are possibly empty sequences of (terminal and nonterminal) 
+    symbols such that $N \rightarrow \alpha\ \beta$ is a production of the grammer, and
+    \item $\bullet$ marks the current position in matching the right side.
+\end{itemize}
+
+\subsubsubsubsection{Parsing Automaton}
+An LR(0) parsing automaton consists of
+\begin{itemize}
+    \item a finite set of states, each of which consists of a set of LR(0) parsing items, and
+    \item transitions between states, each of which is labelled by a transition symbol.
+\end{itemize}
+Each state in an LR(0) parsing automaton must have only one associated parsing action.
