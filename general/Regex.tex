@@ -1,0 +1,67 @@
+\subsection{Regular Expressions}
+The syntax of regular expressions in BNF is as follows:
+\begin{align*}
+    e :: = a | \epsilon | \theta | e"|"e | e \ e | e^{"*"} | (e)
+\end{align*}
+Note that regex uses "|" to list alternatives similar to BNF notation.
+
+\subsubsubsection{Language of a regular expression}
+Given an alphabet $\Sigma$, the set of regular expressions defines a language (i.e., a set opf strings of symbols from the alphabet). Let $"a"$ be a symbol, and $e$ and $f$ regular expressions.
+
+\begin{itemize}
+    \item $\pazocal{L}(a) = \{"a"\}$
+    \item $\pazocal{L}(\epsilon) = \{"" \}$
+    \item $\pazocal{L}(\theta) = \{ \}$
+    \item $\pazocal{L}(e | f) = \pazocal{L}(e) \cup \pazocal{L}(f)$
+    \item $\pazocal{L}(e \ f) = \pazocal{L}(e) \smallfrown \pazocal{L}(f)$
+    \item $\pazocal{L}(e^{*}) = \cup _{n \in \mathbb{N}} (\pazocal{L}(e))^n$
+    \item $\pazocal{L}((e)) = \pazocal{L}(e)$
+\end{itemize}
+
+\subsubsubsection{Concatenation of languages}
+The concatenation of two langauges (sets of string), $L_1$ and $L_2$ is defined as the set of all strings formed by taking a string, $s_1$ from $L_1$ and a string, $s_2$ from $L_2$, and concatenating them. For example, 
+\begin{align*}
+    \{a, b\} \smallfrown \{c, d\} = \{ac, ad, bc, bd\}
+\end{align*}
+
+\subsubsubsection{Iteration of a language}
+The iteration, $L_n$, of a language, $L$, to the power $n$, consists of $L$ concatenated with itself $n$ times. 
+\begin{align*}
+    L^0 = \{\} \\
+    L^1 = L \\
+    L^2 = L \smallfrown L \\
+    L^3 = L \smallfrown L \smallfrown L \\
+    \dots
+\end{align*}
+$\pazocal{L}(a|b) = {a, b}$  and
+\begin{align*}
+    \{a, b\}^0 = \{\}\\
+    \{a, b\}^1 = \{a, b\}\\
+    \{a, b\}^2 = \{aa, ab, ba, bb\}\\
+    \dots
+\end{align*}
+
+Hence $\pazocal{L}((a|b)^*) = \{, a, b, aa, ab, ba, bb \dots \}$ \\
+Note that this does not include any infinite strings of symbols because the iteration only generates finite concatenations.
+\subsubsubsection{Finite Automata}
+\begin{itemize}
+    \item A finite automaton is a finite state machine consisting of a fine set of states with labelled transitions between states. 
+    \item Each transitioin is labelled with either a symbol ($a \in \Sigma$) or empty ($\epsilon$).
+    \item We distinguish between deterministic and nondeterminisitc finite automata.
+    \item For a deterministic finite automaton (DFA) empty transitions are not allowed, and for each state and symbol the next statte, if there is one, is uniquely determined. 
+    \item For a nondeterministic finite automaton (NFA) empty transitions are allowed, and there may be multiple transitions from a state to a different next states on the same input symbol.
+\end{itemize}
+
+\subsubsubsection{Deterministic Finite Automaton (DFA)}
+A DFA, $D$, consists of
+\begin{itemize}
+    \item A finite alphabet of symbols, $\Sigma$
+    \item A finite set of states, $S$
+    \item A transition function, $T : \Sigma \times S \rightarrow S$, which maps an (input) symbol and a (current) state to the (next) state; the function $T$ may not be defined for all pairs of symbols and state. 
+    \item A start state, $s_0$ 
+    \item A set of final (or accepting) states, $F$
+\end{itemize}
+
+% \begin{itemize}
+
+% \end{itemize}
