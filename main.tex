@@ -81,7 +81,9 @@
 
 \newcommand{\imp}{\Rightarrow}
 
-\newcommand{\image}[1]{\includegraphics[width=\columnwidth]{#1}}
+\newcommand{\image}[2][\columnwidth]{%
+    \includegraphics[width=#1]{#2}%
+}
 
 % Define BibTeX command
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
@@ -130,7 +132,10 @@
 
 \input{./general/Left_Factoring_&_Left_Recursion.tex}
 
+\input{./general/Runtime_Environment.tex}
+
 \input{./general/Regex.tex}
+
 
 \scriptsize
 
