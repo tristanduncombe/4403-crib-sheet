@@ -2,30 +2,28 @@
 \subsubsection{Translating EBNF to BNF}
 
 Replace optional construct $[S]$ by a new nonterminal $OptS$:
-
-$OptS \rightarrow S | \epsilon$ \newline
+\begin{align*}
+    OptS \rightarrow S | \epsilon
+\end{align*}
 For example, we can rewrite
-$RelCondition \rightarrow Exp \ [RelOp \ Exp]$ \newline
+\begin{align*}
+    RelCondition \rightarrow Exp \ [RelOp \ Exp]
+\end{align*}
 as
-
-$RelCondition \rightarrow Exp \ OptRelExp$
-$OptRelExp \rightarrow RelOp \ Exp | \epsilon$
-
-Replace grouping construct ( $S$ ) by a new nonterminal $GrpS$:
-
-$GrpS \rightarrow S$
-
+\begin{align*}
+    RelCondition \rightarrow Exp \ OptRelExp \\
+    OptRelExp \rightarrow RelOp \ Exp | \epsilon
+\end{align*}
+Replace grouping construct ($S$) by a new nonterminal $GrpS$:
+\begin{align*}
+    GrpS \rightarrow S
+\end{align*}
 For example, we can rewrite
-
-$RepF \rightarrow (TIMES \ | \ DIVIDE) \ Factor \ RepF \ | \epsilon$
-
+\begin{align*}
+    RepF \rightarrow (TIMES \ | \ DIVIDE) \\ \ Factor \ RepF \ | \epsilon
+\end{align*}
 as 
-
-$RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon$ \\
-$TermOp \rightarrow TIMES \ | \ DIVIDE$
-
-\subsubsection{parsing example}
-\vspace*{6.5cm}
-
-\vspace*{0.3cm}
-\newblock
+\begin{align*}
+    RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon \\
+    TermOp \rightarrow TIMES \ | \ DIVIDE
+\end{align*}
