@@ -1,17 +1,4 @@
 \subsection{Bottom Up Parsing}
-\subsubsubsection{LR(0) Grammars}
-An LR(0) parsing item is of the form
-\begin{align*}
-    N \rightarrow \alpha \bullet \beta
-\end{align*}
-which indicates that, in matching $N$, $\alpha$ has been matched and $\beta$ is yet to 
-be matched where
-\begin{itemize}
-    \item $N$ is a nonterminal symbol,
-    \item $\alpha$ and $\beta$ are possibly empty sequences of (terminal and nonterminal) 
-    symbols such that $N \rightarrow \alpha\ \beta$ is a production of the grammer, and
-    \item $\bullet$ marks the current position in matching the right side.
-\end{itemize}
 
 \subsubsubsubsection{Parsing Automaton}
 An LR(0) parsing automaton consists of
@@ -105,17 +92,6 @@ A grammar is LR(0) if none of the states in its parsing
 automaton contains a conflict.
 
 \subsubsubsection{LR(1) Grammars}
-An LR(1) parsing item is a pair
-\begin{align*}
-    [N \rightarrow \alpha \bullet \beta, T]
-\end{align*}
-consisting of
-\begin{itemize}
-    \item an LR(0) parsing item $N \rightarrow a \bullet \beta$, and
-    \item a set $T$ of terminal symbols called a look-ahead set.
-\end{itemize}
-The above item indicates that in matchin $N$, $\alpha$ has been matched and $\beta$ is yet 
-to be matched, in a context in which $N$ can be followed by a terminal symbol in the set $T$.
 
 \subsubsubsubsection{Parsing Automaton}
 The kernal item of the initial state is
