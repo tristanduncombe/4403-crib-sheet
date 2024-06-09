@@ -1,16 +1,4 @@
 \subsection{Bottom Up Parsing}
-
-\subsubsection{Shift/Reduce Parsing}
-Makes use of a parse stack and has three actions:
-\begin{itemize}
-    \item \textbf{shift} - push the next input symbol onto the stack,
-    \item \textbf{reduce} - if a sequence of symbols on the top of the stack, $\alpha$, 
-    matches the right side of some production $N \rightarrow \alpha$, then the sequence 
-    $\alpha$ on top of the stack is replaced by $N$.
-    \item \textbf{accept} - if the stack contains just the start symbol and there is no
-    input left, the input has been recognised and is accepted.
-\end{itemize}
-
 \subsubsubsection{LR(0) Grammars}
 An LR(0) parsing item is of the form
 \begin{align*}
@@ -36,21 +24,16 @@ Each state in an LR(0) parsing automaton must have only one associated parsing a
 \subsubsubsubsection{Automaton States}
 If a state has an LR(0) item of the form
 \begin{align*}
-    N &\rightarrow \alpha \bullet M \beta \\
+    N &\rightarrow \alpha \bullet M \beta
 \end{align*}
 where the nonterminal $M$ has productions
 \begin{align*}
-    M &\rightarrow \alpha_1 \\
-    M &\rightarrow \alpha_2 \\
-    &\vdots \\
-    M &\rightarrow \alpha_m \\
+    M \rightarrow \alpha_1, M \rightarrow \alpha_2, \dots, M \rightarrow \alpha_m
 \end{align*}
+
 then the state also includes the derived items
 \begin{align*}
-    M &\rightarrow \bullet \alpha_1 \\
-    M &\rightarrow \bullet \alpha_2 \\
-    &\vdots \\
-    M &\rightarrow \bullet \alpha_m
+    M \rightarrow \bullet \alpha_1, M \rightarrow \bullet \alpha_2, \dots, M \rightarrow \bullet \alpha_m
 \end{align*}
 
 \subsubsubsubsection{Goto States}
@@ -71,7 +54,7 @@ that occurence of $x$ rather than before it.
 An LR(0) item of the form
 \begin{itemize}
     \item $N \rightarrow \alpha \bullet a \beta$ where $a$ is a terminal symbol, indicates 
-    the state containing the item has a shift  \textbf{parsing} action
+    the state containing the item has a \textbf{shift} parsing action
     \item $S' \rightarrow S \bullet$ where $S'$ is the (introduced) start symbol for the 
     grammer, inidcates the state containing the item has an  \textbf{accept} action
     \item $N \rightarrow \alpha \bullet$ where $N$ is not the (introduced) start symbol for 
@@ -81,7 +64,7 @@ An LR(0) item of the form
 A shift action at end-of-file is an error, as is an accept action when the input is not at 
 end-of-file.
 
-\subsubsubsubsection{Example}
+\subsubsubsubsection{Example Table}
 \begin{equation*}
     \begin{aligned}[c]
         S \rightarrow A
@@ -95,7 +78,6 @@ end-of-file.
         A \rightarrow a
     \end{aligned}
 \end{equation*}
-\image{LR(0) Automaton Example.png}
 \begin{center}
     \begin{tabular}{|lr|l|}
         \hline
@@ -119,8 +101,8 @@ end-of-file.
 If a state in an LR(0) parsing automaton has more than one action, 
 there is a parsing action conflict.
 
-A grammar is LR(0) if none of the states in its LR(0) parsing 
-automaton contains a parsing action conflict.
+A grammar is LR(0) if none of the states in its parsing 
+automaton contains a conflict.
 
 \subsubsubsection{LR(1) Grammars}
 An LR(1) parsing item is a pair
@@ -166,45 +148,26 @@ $T' = First(\beta) - \{\epsilon\} \cup T$.
 An LR(1) item of the form
 \begin{itemize}
     \item $[N \rightarrow \alpha \bullet a \beta, T]$, where $a$ is a terminal symbol, 
-    indicates the state containing the item has a \textbf{shift} parsion action if the
+    indicates the state containing the item has a \textbf{shift on \textit{a}} parsion action if the
     next input $x$ is $a$
     \item $[S' \rightarrow \S \bullet, \$]$, where $S'$ is the added start symbol for 
-    the grammar, indicates the state containing the item has an \textbf{accept} action 
+    the grammar, indicates the state containing the item has an \textbf{accept on \textit{\$}} action 
     if there is no more input.
     \item $[N \rightarrow \alpha \bullet, T]$, where $N$ is not $S'$, indicates the state 
-    containing the item has a parsing action \textbf{reduce $N \rightarrow \alpha$} if 
+    containing the item has a parsing action \textbf{reduce $N \rightarrow \alpha$ on \textit{T}} if 
     the next input $x$ is in $T$.
 \end{itemize}
-
-\subsubsubsubsection{Example}
-\begin{equation*}
-    \begin{aligned}[c]
-        S \rightarrow E
-    \end{aligned}
-    \qquad 
-    \begin{aligned}[c]
-        E \rightarrow E + n
-    \end{aligned}
-    \qquad 
-    \begin{aligned}[c]
-        E \rightarrow n
-    \end{aligned}
-\end{equation*}
-\image{LR(1) Automaton Example.png}
-
 \subsubsubsubsection{Parsing Action Conflicts}
 If a state in an LR(1) parsing automaton has more than one action for a look-ahead 
 terminal symbol, there is a parsing action conflict.
 
-A grammar is LR(1) if none of the states in its LR(1) parsing automaton contains a parsing
-action conflict.
+A grammar is LR(1) if none of the states in its parsing automaton contains a conflict.
 
 
 \subsubsubsection{LALR(1) Parsing}
 \begin{itemize}
     \item An LALR(1) parsing automaton can be formed from an LR(1) parsing automaton by 
-    merging states that have identical sets of LR(0) items but possibly different look-ahead 
-    sets.
+    merging the states and lookahead sets that have identical sets of productions
     \item A grammar is LALR(1) if none of the states in its LALR(1) parsing automaton contains 
-    a parsing action conflict.
+    a conflict.
 \end{itemize}
