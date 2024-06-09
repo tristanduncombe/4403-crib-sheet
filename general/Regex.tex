@@ -1,0 +1,274 @@
+\subsection{Regular Expressions}
+The syntax of regular expressions in BNF is as follows:
+\begin{align*}
+    e :: = a | \epsilon | \theta | e"|"e | e \ e | e^{"*"} | (e)
+\end{align*}
+Note that regex uses "|" to list alternatives similar to BNF notation.
+
+\subsubsubsection{Language of a regular expression}
+Given an alphabet $\Sigma$, the set of regular expressions defines a language (i.e., a set opf strings of symbols from the alphabet). Let $"a"$ be a symbol, and $e$ and $f$ regular expressions.
+
+\begin{itemize}
+    \item $\pazocal{L}(a) = \{"a"\}$
+    \item $\pazocal{L}(\epsilon) = \{"" \}$
+    \item $\pazocal{L}(\theta) = \{ \}$
+    \item $\pazocal{L}(e | f) = \pazocal{L}(e) \cup \pazocal{L}(f)$
+    \item $\pazocal{L}(e \ f) = \pazocal{L}(e) \smallfrown \pazocal{L}(f)$
+    \item $\pazocal{L}(e^{*}) = \cup _{n \in \mathbb{N}} (\pazocal{L}(e))^n$
+    \item $\pazocal{L}((e)) = \pazocal{L}(e)$
+\end{itemize}
+
+\subsubsubsection{Concatenation of languages}
+The concatenation of two langauges (sets of string), $L_1$ and $L_2$ is defined as the set of all strings formed by taking a string, $s_1$ from $L_1$ and a string, $s_2$ from $L_2$, and concatenating them. For example, 
+\begin{align*}
+    \{a, b\} \smallfrown \{c, d\} = \{ac, ad, bc, bd\}
+\end{align*}
+
+\subsubsubsection{Iteration of a language}
+The iteration, $L_n$, of a language, $L$, to the power $n$, consists of $L$ concatenated with itself $n$ times. 
+\begin{align*}
+    L^0 = \{\} \\
+    L^1 = L \\
+    L^2 = L \smallfrown L \\
+    L^3 = L \smallfrown L \smallfrown L \\
+    \dots
+\end{align*}
+$\pazocal{L}(a|b) = {a, b}$  and
+\begin{align*}
+    \{a, b\}^0 = \{\}\\
+    \{a, b\}^1 = \{a, b\}\\
+    \{a, b\}^2 = \{aa, ab, ba, bb\}\\
+    \dots
+\end{align*}
+
+Hence $\pazocal{L}((a|b)^*) = \{, a, b, aa, ab, ba, bb \dots \}$ \\
+Note that this does not include any infinite strings of symbols because the iteration only generates finite concatenations.
+\subsubsubsection{Finite Automata}
+\begin{itemize}
+    \item A finite automaton is a finite state machine consisting of a fine set of states with labelled transitions between states. 
+    \item Each transitioin is labelled with either a symbol ($a \in \Sigma$) or empty ($\epsilon$).
+    \item We distinguish between deterministic and nondeterminisitc finite automata.
+    \item For a deterministic finite automaton (DFA) empty transitions are not allowed, and for each state and symbol the next statte, if there is one, is uniquely determined. 
+    \item For a nondeterministic finite automaton (NFA) empty transitions are allowed, and there may be multiple transitions from a state to a different next states on the same input symbol.
+\end{itemize}
+
+\subsubsubsection{Deterministic Finite Automaton (DFA)}
+A DFA, $D$, consists of
+\begin{itemize}
+    \item A finite alphabet of symbols, $\Sigma$
+    \item A finite set of states, $S$
+    \item A transition function, $T : \Sigma \times S \rightarrow S$, which maps an (input) symbol and a (current) state to the (next) state; the function $T$ may not be defined for all pairs of symbols and state. 
+    \item A start state, $s_0$ 
+    \item A set of final (or accepting) states, $F$
+\end{itemize}
+
+\image{DFA.png}
+\begin{itemize}
+    \item $\Sigma = {a,b,c}$
+    \item $S = \{1,2,3,4\}$
+    \item $T(a, 1) = 2 $
+    \item $T(c, 1) = 4$
+    \item $T(b, 2) = 3$
+    \item $s_0 = 1$
+    \item $F = \{3,4\}$
+\end{itemize}
+
+\subsubsubsection{Language of a DFA}
+The language $\pazocal{L}(D)$, of a DFA $D$, is the set of finite strings fo symbols from $\Sigma$ such that $c \in \pazocal{L}(D)$ if and only if there exists a sequence of states $s_1, s_2, \dots, s_n$ where $n$ is the legnth of $c$, such that
+\begin{align*}
+    T(c_1, s_0) = s_1 \\
+    T(c_2, s_1) = s_2 \\
+    \dots \\
+    T(c_n, s_{n-1}) = s_n
+\end{align*}
+and $s_0$ is the start state and $s_n$ is in the set of final (or accepting) states F.
+
+The language of the above DFA is $\pazocal{L}(D) = \{ab, c\}$
+
+\subsubsubsection{Nondeterministic Finite Automaton (DFA)}
+A NFA, $N$, is different to a DFA in that its 
+
+Transition function is $T : (\Sigma \cup \{ \epsilon \}) \times S \rightarrow \mathbb{P} S$, which maps an (input) symbol and a (current) state to a  set of possible (next states); the function $T$ may not be defined for all pairs of symbol and state.
+
+
+\subsubsubsection{NFA}
+
+
+\begin{itemize}
+    \item $\Sigma = {a,b,c}$
+    \item $S = {1, 2, 3, 4, 5, 6, 7}$
+    \item $T(\epsilon) = \{2,6\}    T(a,2) = \{3\}$
+    \item $T(b,3) = \{4\}    T(\epsilon,4) = \{5\}$
+    \item $T(c,6) = \{7\}    T(\epsilon,7) = \{5\}$
+    \item $s_0 = 1$
+    \item $F = \{5\}$
+\end{itemize}
+\image{NFA.png}
+
+\subsubsubsection{Language of a NFA}
+The language $\pazocal{L}(N)$, of a NFA $N$, is the set of finite strings fo symbols from $\Sigma$ such that $c \in \pazocal{L}(N)$ if and only if there exists a sequence $c' \in (\Sigma \cup \{\epsilon \})^*$, such that removing all the $\epsilon$ elements from $c'$ gives $c$ and there exists a sequence of states $s_1, s_2, \dots, s_n$ where $n$ is the length of $c'$, such that
+\begin{align*}
+    T(c'_1, s_0) = s_1 \\
+    T(c'_2, s_1) = s_2 \\
+    \dots \\
+    T(c'_n, s_{n-1}) = s_n
+\end{align*}
+and $s_0$ is the start state and $s_n$ is in the set of final (or accepting) states F.
+
+The language of the above NFA is $\pazocal{L}(D) = \{ab, c\}$ Empty transitions are used to generate the strings by then omitted from the strings. 
+
+\subsubsubsection{From a Regex to an NFA}
+\begin{itemize}
+    \item The translation of a regular expression to a nondeterministic finite automaton is based on the structure of the regular expression.
+    \item For each of the syntactic forms of regular expressions given in Definition 1, an NFA is given for that form.
+    \item If the syntactic form contains sub-expressions (e.g. e | f contains sub-expressions e and f ) the NFA for that form is constructed from the NFAs for the sub-expressions e and f .
+\end{itemize}
+
+\image{accepting_state.png}
+The final (acceptiong states are indicted by double circle.)
+
+\image{concatenation.png}
+The final state of the NFA for $e$ is no longer a final in the NFA for $e$ $f$.
+
+\subsubsubsection{Example a b $|$ c}
+\image{abc_example.png}
+
+\subsubsubsection{Alternation e $|$ f}
+The NFAs for e and f are the same as for concatenation.
+\image{alternationef.png}
+The final states of the NFAs for both e and f are no longer final
+states in the NFA for e $|$ f.
+
+\subsubsubsection{Repetition e*}
+\image{nfa_e.png}
+The final state in the NFA for $e$ is no longer an final state in the NFA for $e^*$.
+
+\subsubsubsection{NFA for a | b}
+\image{nfa_ab.png}
+
+\subsubsubsection{NFA for (a | b)*}
+\image{nfa_eps.png}
+
+\subsubsubsection{From an Regex to a NFA}
+In the translation from a regular expression, $r$, to an NFA, thegenerated NFA has a few properties that do not necessarily hold for an arbitrary NFA (i.e. one not generated from a regular expression).
+\begin{itemize}
+    \item The NFA has a single final (accepting) state.
+    \item The initial state of the NFA only has outgoing transitions.
+    \item The final state only has incoming transitions.
+\end{itemize}
+The translation rules preserve these properties.
+
+\subsubsubsection{From NFA to DFA}
+A DFA cannot have 
+\begin{itemize}
+    \item more than one transition leaving a state on the same symbol
+    \item any empty transitions
+\end{itemize}
+An NFA N can be translated to an equivalent DFA D.
+\begin{itemize}
+    \item equivalent in the sense that they accept the same languages, i.e., $\pazocal{L}(N) = \pazocal{L}(D)$.
+\end{itemize}
+
+\subsubsubsection{From NFA to DFA}
+An NFA is transformed to a DFA in which the labels on the states of the DFA are sets of states from the NFA.
+The sets of states that label a DFA state are formed by collecting all the states that can be reached from NFA states by empty transitions. 
+
+\subsubsubsection{Empty Closure of a state}
+Empty Closure of a state
+The empty closure of a state $x$ in an NFA $N$, $\epsilon$-closure$(x, N)$, is
+the set of states in $N$ that are reachable from x via any number
+of empty transitions
+
+\subsubsubsection{Empty Closure of a set of states}
+The empty closure of a set of states $X$ in an NFA $N$, $\epsilon$-closure$(X , N)$, is the set of states in $N$ that are reachable from any of the states in $X$ via any number of empty transitions. 
+
+\begin{align*}
+    \epsilon \text{-closure}(X, N) = \underset{x \in X}{\cup} \ \epsilon \text{-closure}(x, N)
+\end{align*}
+
+Empty close of $a \ b \ | \ c$
+
+\begin{tabular}{|c|c|}
+    \hline
+    State $x$ & $\epsilon$-closure$(x, \text{NFA})$ \\
+    \hline
+    1 & \{1, 2, 6\} \\
+    2 & \{2\} \\
+    3 & \{3\} \\
+    4 & \{4, 5\} \\
+    5 & \{5\} \\
+    6 & \{6\} \\
+    7 & \{7, 5\} \\
+    \hline
+\end{tabular}
+
+\subsubsubsection{Constructing the DFA from the NFA}
+
+The label of the start state of the DFA consists of the set of states containing the start state $s_0$ of the NFA plus all the states in the NFA that are reachable from its start state by one or more empty transitions. 
+
+\begin{align*}
+    S_0 = \epsilon\text{-closure}(s_0, N). 
+\end{align*}
+
+The process for forming a DFA works with a set of unmarked DFA states by selecting an unmarked DFA state and considering all transitions from it on symbols. The initial set of unmarked states contains just $S_0$.
+
+\subsubsection{From NFA to DFA}
+
+The following process is repeated until there are no unmarked DFA states left:
+\begin{itemize}
+    \item An unmarked DFA state $S$ is selected (the first one is $S_0$).
+    \item For each symbol $a$,
+    \begin{itemize}
+        \item we consider the set of states that can be reached from any state in $S$ by a transition on $a$; call this set of states $X$.
+        \item If $X$ is nonempty, we add a new state to the DFA labeled with $X' = \epsilon\text{-closure}(X, N)$, unless a state with that label already exists, in which case it is reused.
+        \item A transition from $S$ to $X'$ on $a$ is added to the DFA.
+    \end{itemize}
+    \item The state $S$ is marked as having been processed.
+\end{itemize}
+
+\subsubsubsection{From NFA to DFA for a b | c}
+
+\image{nfatodfa.png}
+
+\subsubsubsection{From NFA to DFA for (b | c)* a*}
+
+\image{nfatodfabca.png}
+
+\subsubsubsection{Minimising a DFA}
+
+The DFA generated in the above example can be simplified to one with only two states. Below is a simplified version of the DFA with the states relabelled to to A, B, C and D.
+\image{minimising_dfa.png}
+
+To minimise the DFA we merge states that have the same
+transition to the equivalent states. For the example, A, B and C
+are equivalent.
+
+\image{minimised.png}
+
+Start by partitioning states into a group of final states and a group of non-final states. For the example, all states are all final so just get the one group \{A, B, C, D\}.
+For each symbol $x$, we require all states in a group $G1$ to transition to the same group $G2$. For the example, a transition on $b$ takes states A, B and C back to the same group \{A, B, C\} but there is no transition on $b$ from state D and hence we must split the group into groups \{A, B, C\} and \{D\}.
+Once that is done for every symbol $x$, the transitions from all states in each group on $x$ are to the same group, and hence we have finished.
+
+\subsubsubsection{Regular expressions for lexical analysis}
+
+\begin{itemize}
+    \item The lexical analyser generator JFlex makes use of translating regular expressions into DFAs in order to build a scanner.
+    \item The input to the lexical analyser generator is a list of regular expressions along with an action to be taken when that token is matched.
+    \item The generated lexical analyser matches
+    \begin{itemize}
+        \item the longest prefix of the input from the current position that matches any of the regular expressions in the list and
+        \item if the prefix of the input matches more than one regular expression, the action associated with the first matching regular expression in the list is executed.
+    \end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+    \item For PL0 the string "end" followed by a blank matches both
+    \begin{itemize}
+        \item the regular expression for the keyword "end" and
+        \item the regular expression for an identifier.
+    \end{itemize}
+    \item The action selected for "end" is that for the keyword "end" because the regular expression for the keyword appears before the regular expression for an identifier.
+    \item The string "ending" followed by a blank matches only the regular expression for an identifier; it will not be split into the keyword "end" followed by the identifier "ing".
+    \item But the string "end ing " will be matched as the keyword "end" followed by the identifier "ing".
+\end{itemize}
