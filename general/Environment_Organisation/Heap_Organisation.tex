@@ -1,37 +1,14 @@
 \subsubsection{Heap Organisation}
-\subsubsubsection{Dynamic Memory Allocation}
-Dynamic allocation of objects takes place on the $heap$, an area of memory seperate 
-from the stack.
-
-\subsubsubsection{Dynamic Memory Deallocation}
-There are two main forms of memory deallocation used in programming languages:
-\begin{itemize}
-    \item \textbf{Explicit deallocation} in which there is a function to explicitly 
-    deallocate and object
-    \item \textbf{Garbage collection} in which the space used by unreachable objects 
-    is reclaimed by a garbage collector.
-\end{itemize}
-
-\subsubsubsubsection{Explicit Memory Deallocation}
-\begin{itemize}
-    \item freed memory is returned to the "free list"
-    \item if the memory freed is adjacent to other blocks of memory in the free list, 
-    the adjacent free blocks are merged into a single larger free block to reduce 
-    fragmentation
-    \item the freed memory is available for re-allocation
-\end{itemize}
-
 \subsubsubsubsection{Issues w/ Explicit Deallocation}
 \begin{itemize}
-    \item \textbf{Dangling references} - an object can be freed via one reference but 
-    still be accessible via other references
-    \item \textbf{Memory leaks} - all references to an object are removed but the object 
+    \item \textbf{Dangling references} --- an object can be freed via one reference but 
+    still be accessible via other references.
+    \item \textbf{Memory leaks} --- all references to an object are removed but the object 
     was not freed.
-    \item \textbf{Memory fragmentation} - the memory consists of alternating alloctated 
-    and free areas, with no large area of free memory.
-    \item \textbf{Locality of reference} - how spread out the memory is in the address space.
+    \item \textbf{Memory fragmentation} --- the memory consists of alternating alloctated 
+    \& free areas, with no large area of free memory.
+    \item \textbf{Locality of reference} --- how spread out the memory is in the address space.
 \end{itemize}
-All of these issues can be solved with a garbage collector.
 
 \subsubsubsection{Garbage Collection}
 An object is accessible if it can be reached either
@@ -39,53 +16,41 @@ An object is accessible if it can be reached either
     \item directly via a reference in a global or local variable, or
     \item indirectly via a reference in an object that is accessible.
 \end{itemize}
-Garbage collection determined which objects are not accessible and recovers the space used 
+Garbage collection determined which objects are not accessible \& recovers the space used 
 by them.
 
-\subsubsubsubsection{Mark-and-sweep}
-Mark and sweep consists of
+\subsubsubsubsection{Mark-\&-sweep}
 \begin{itemize}
     \item a phase that \textbf{marks} all the accessible objects
-    \item a phase that \textbf{sweeps} up the objects left unmarked and adds them to the 
+    \item a phase that \textbf{sweeps} up the objects left unmarked \& adds them to the 
     free list
 \end{itemize}
 
-\subsubsubsubsection{Stop-and-copy}
+\subsubsubsubsection{Stop-\&-copy}
 \begin{itemize}
     \item divides the available memory into two spaces
     \item memory is allocated sequentially from one space until it runs out
-    \item garbage collection consists of relacating all accessible objects from the first 
+    \item garbage collection consists of relocating all accessible objects from the first 
     space to the second space
-    \item because the objects are allocated sequentially in the second space, they are 
-    compacted
-    \item when the copy is completed, the roles of the spaces are swapped for the next 
-    garbage collection
 \end{itemize}
 Overcomes memory fragmentation problems, but copying can be expensive in time.
 
 \subsubsubsubsection{Generational Schemes}
-Generational schemes use a scheme similar to the stop-and-copy scheme, but make us of more 
+Generational schemes use a scheme similar to the stop-\&-copy scheme, but make us of more 
 spaces
 \begin{itemize}
     \item the spaces are organised based on the length of time its objects have survived
-    \item the ages of an object is the number of times it has been collected
-    \item older objects are migrated to an old object space
-    \item newer objects go in the new object space
-    \item the objects in the old object space is garbage collected
-    \item the old object space may have to be garbage colelcted at some stage
+    \item older objects are migrated to an old object space \& newer objects go in the a 
+    new object space
+    \item the newer the space, the more frequently it is garabage collected
 \end{itemize}
 
 \subsubsubsubsection{Issues w/ Garbage Collection}
 \begin{itemize}
     \item Garbage collection has a greater time overhead than explicit deallocation
-    \item Response time can vary because
-        \item garbage collection can happen at any time
-        \item it can take a significant amount of time
+    \item Response time can vary because garbage collection can happen at any time 
+    \& is time expensive
     \item Real-time response hard to guarantee
-        \item Pre-allocating all objects necessary
-        \item Use incremental on-the-fly garbage collected
-        \item Use concurrent garbage collector
-    \item It is complex and tricky to get correct 
 \end{itemize}
 
 \subsubsubsubsection{On-the-fly}
