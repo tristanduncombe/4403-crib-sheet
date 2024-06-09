@@ -202,16 +202,9 @@ action conflict.
 
 \subsubsubsection{LALR(1) Parsing}
 \begin{itemize}
-    \item Look-Ahead merged LR(1) parsing where each state of an LALR(1) parsing automaton 
-    consists of a set of LR(1) items.
     \item An LALR(1) parsing automaton can be formed from an LR(1) parsing automaton by 
     merging states that have identical sets of LR(0) items but possibly different look-ahead 
     sets.
-    \item Each item in the merged state consists of one of the LR(0) items in the states 
-    being merged with a look-ahead set that is the union of the look-ahead sets of that item 
-    in all the states being merged.
-    \item The parsing actions for LALR(1) parsing are defined in the same way as for LR(1) 
-    parsing.
     \item A grammar is LALR(1) if none of the states in its LALR(1) parsing automaton contains 
     a parsing action conflict.
 \end{itemize}
