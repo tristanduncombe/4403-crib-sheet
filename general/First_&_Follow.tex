@@ -1,43 +1,4 @@
 \subsection{First \& Follow Sets}
-
-\subsubsection{First Sets}
-The first set for a construct $\alpha$ records
-\begin{itemize}
-    \item the set of terminal symbols $\alpha$ can start with, and
-    \item if $\alpha$ is nullable, it contains the empty string $\epsilon$ to indicate that.
-\end{itemize}
-
-\subsubsubsection{Calculating First Sets}
-Let
-\begin{itemize}
-    \item $\alpha$ be a terminal symbok,
-    \item $\alpha_1,\alpha_2,\dots,\alpha_n$ be strings of (terminal and nonterminal) symbols, and
-    \item $A$ be a nonterminal symbol defined by a single production
-\end{itemize}
-\begin{align*}
-    A \rightarrow \alpha_1 | \alpha_2 | \dots | \alpha_n,
-\end{align*}
-then
-\begin{align*}
-    Fst(\epsilon) &= \{\epsilon\}\\
-    Fst(\alpha) &= \{\alpha\}\\
-    Fst(\alpha_1 | \alpha_2 | \dots | \alpha_n) &= Fst(\alpha_1) \cup Fst(\alpha_2)\\
-                                                  &\ \ \ \ \cup \dots \cup Fst(\alpha_n)\\  
-    Fst(A) &= Fst(\alpha_1 | \alpha_2 | \dots | \alpha_n)\\
-\end{align*}
-
-Let $S_1,S_2,\dots,S_n$ be (terminal or nonterminal) symbols, then
-\begin{align*}
-    F&st(S_1 S_2 \dots S_n) =\\
-    &Fst(S_1) - \{\epsilon\}\\
-    &\cup Fst(S_2) - \{\epsilon\} &&\text{if $S_1$ is nullable}\\
-    &\cup \dots\\
-    &\cup Fst(S_i) - \{\epsilon\} &&\text{if $S_1$-$S_{i-1}$ is nullable}\\
-    &\cup \dots\\
-    &\cup Fst(S_n) - \{\epsilon\} &&\text{if $S_1$-$S_{n-1}$ is nullable}\\
-    &\cup \{\epsilon\} &&\text{if $S_1$-$S_n$ is nullbale}
-\end{align*}
-
 \subsubsubsection{Calculating Algorithmically}
 Start with the first sets for all nonterminals being the empty set and note that the first set for every terminal symbol, $\alpha$, is the singleton set $\{\alpha\}$.
 We then make a pass over all production in a grammer considering all atlternatives and process as follows.
@@ -47,60 +8,35 @@ We then make a pass over all production in a grammer considering all atlternativ
     \item If every construct $S_1,...,S_n$ is nullabe, we add $\epsilon$ to the first set for $N$. 
 \end{itemize}
 We repeat the the passes until no set is modified in the pass, in which case we are finished.
-\subsubsubsubsection{Example}
-\begin{align*}
-    A &\rightarrow B\,x | C\\
-    B &\rightarrow C\,y | D\\
-    C &\rightarrow D\,z | \epsilon\\
-    D &\rightarrow A\,w
-\end{align*}
-\begin{center}
-\begin{tabular}{|c|c|c|c|c|c|}
-    \hline
-    $A$ & $\{\}$ & $\{\epsilon\}$ & $\{\epsilon,y\}$ &  $\{\epsilon,y,w\}$ &  $\{\epsilon,y,w\}$\\
-    \hline
-    $B$ & $\{\}$ & $\{y\}$ & $\{y\}$ &  $\{y,w\}$ &  $\{y,w\}$\\
-    \hline
-    $C$ & $\{\epsilon\}$ & $\{\epsilon\}$ & $\{\epsilon,w\}$ &  $\{\epsilon,w,y\}$ &  $\{\epsilon,w,y\}$\\
-    \hline
-    $D$ & $\{\}$ & $\{w\}$ & $\{w,y\}$ &  $\{w,y\}$ &  $\{w,y\}$\\
-    \hline
-\end{tabular}
-\end{center}
+% \subsubsubsubsection{Example}
+% \begin{equation*}
+%     \begin{aligned}[c]
+%         A &\rightarrow B\,x | C\\
+%         B &\rightarrow C\,y | D
+%     \end{aligned}
+%     \qquad 
+%     \begin{aligned}[c]
+%         C &\rightarrow D\,z | \epsilon\\
+%         D &\rightarrow A\,w
+%     \end{aligned}
+% \end{equation*}
+% \begin{center}
+% \begin{tabular}{|c|c|c|c|c|c|}
+%     \hline
+%     $A$ & $\{\}$ & $\{\epsilon\}$ & $\{\epsilon,y\}$ &  $\{\epsilon,y,w\}$ &  $\{\epsilon,y,w\}$\\
+%     \hline
+%     $B$ & $\{\}$ & $\{y\}$ & $\{y\}$ &  $\{y,w\}$ &  $\{y,w\}$\\
+%     \hline
+%     $C$ & $\{\epsilon\}$ & $\{\epsilon\}$ & $\{\epsilon,w\}$ &  $\{\epsilon,w,y\}$ &  $\{\epsilon,w,y\}$\\
+%     \hline
+%     $D$ & $\{\}$ & $\{w\}$ & $\{w,y\}$ &  $\{w,y\}$ &  $\{w,y\}$\\
+%     \hline
+% \end{tabular}
+% \end{center}
 
 
 
 \subsubsection{Follow Sets}
-The follow set for a nonterminal, $N$, is the set of terminal symbols that may follow $N$ in any context within the grammar.
-End-of-file is represented by the special terminal symbol $\$$ in which $a$ follows $N$.
-
-A nonterminal, $N$, is followed by a terminal symbol, $a$, if there is a derivation from $S\$$
-
-\subsubsubsection{Calculating Follow Sets}
-We compute the Follow set for a nonterminal, $N$, using two rules.
-\begin{itemize}
-    \item If there is a production of the form
-    \begin{align*}
-        A \rightarrow \alpha N \beta
-    \end{align*}
-    then any symbols that can start $\beta$ can follow $N$, and hence $Follow(N)$ must include all the terminal symbols in $First(\beta)$. Note that $\epsilon$ is not included even if it appears in $First(\beta)$.
-    \begin{align*}
-        First(\beta) - \{\epsilon\} \subseteq Follow(N)
-    \end{align*}
-    \item If there is a production of the form
-    \begin{align*}
-        A \rightarrow \alpha N \beta
-    \end{align*}
-    and $\beta$ is nullable, then any token that can follow $A$ can also follow $N$. Hence,
-    \begin{align*}
-        Follow(A) \subseteq Follow(N)
-    \end{align*}
-    The case where $\beta$ is nullable includes the case when $\beta$ is empty and the production is of the form
-    \begin{align*}
-        A \rightarrow \alpha N
-    \end{align*}
-\end{itemize}
-
 \subsubsubsection{Calculating Algorithmically}
 Start with all nonterminal symbols having an empty follow set, $\{\}$, except for the start symbol, $S$, which has the follow set $\{\$\}$.
 
@@ -115,32 +51,32 @@ we add $First(\beta) - \{\epsilon\}$ to the Follow set computer for $N$ so far,
 and if $\beta$ is nullable, we also add the current Follow set for $A$ to the Follow set for $N$.
 
 After making a complete pass, we repeat the process with the Follow sets computed so far until no Follow sets are modified, in which case we are done.
-\subsubsubsubsection{Example}
-\begin{equation*}
-    \begin{aligned}[c]
-        S &\rightarrow x A B\\
-        A &\rightarrow y | z B\\
-        B &\rightarrow \epsilon | A x
-    \end{aligned}
-    \qquad 
-    \begin{aligned}[c]
-        Fst(S) &= \{x\}\\
-        Fst(A) &= \{y, z\}\\
-        Fst(B) &= \{\epsilon, y, z\}
-    \end{aligned}
-\end{equation*}
+% \subsubsubsubsection{Example}
+% \begin{equation*}
+%     \begin{aligned}[c]
+%         S &\rightarrow x A B\\
+%         A &\rightarrow y | z B\\
+%         B &\rightarrow \epsilon | A x
+%     \end{aligned}
+%     \qquad 
+%     \begin{aligned}[c]
+%         Fst(S) &= \{x\}\\
+%         Fst(A) &= \{y, z\}\\
+%         Fst(B) &= \{\epsilon, y, z\}
+%     \end{aligned}
+% \end{equation*}
 
-\begin{center}
-    \begin{tabular}{|c|c|c|c|c|}
-        \hline
-        $S$ & $\{\$\}$ & $\{\$\}$ & $\{\$\}$ & $\{\$\}$\\
-        \hline
-        $A$ & $\{\}$ & $\{y,z,\$,x\}$ & $\{y,z,\$,x\}$ & $\{y,z,\$,x\}$\\
-        \hline
-        $B$ & $\{\}$ & $\{\$,y,z\}$ & $\{\$,y,z,x\}$ & $\{\$,y,z,x\}$\\
-        \hline
-    \end{tabular}
-\end{center}
+% \begin{center}
+%     \begin{tabular}{|c|c|c|c|c|}
+%         \hline
+%         $S$ & $\{\$\}$ & $\{\$\}$ & $\{\$\}$ & $\{\$\}$\\
+%         \hline
+%         $A$ & $\{\}$ & $\{y,z,\$,x\}$ & $\{y,z,\$,x\}$ & $\{y,z,\$,x\}$\\
+%         \hline
+%         $B$ & $\{\}$ & $\{\$,y,z\}$ & $\{\$,y,z,x\}$ & $\{\$,y,z,x\}$\\
+%         \hline
+%     \end{tabular}
+% \end{center}
 
 \subsubsection{LL(1) Grammar}
 A BNF grammer is LL(1) if for each nonterminal, $N$, wher $N \rightarrow \alpha_1 | \alpha_2 | \dots | \alpha_n$,
