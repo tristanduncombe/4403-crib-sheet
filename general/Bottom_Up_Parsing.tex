@@ -11,48 +11,6 @@ Makes use of a parse stack \& has three actions:
     input left, the input has been recognised \& is accepted.
 \end{itemize}
 
-\subsubsubsection{LR(0) Grammars}
-An LR(0) parsing item is of the form
-\begin{align*}
-    N \rightarrow \alpha \bullet \beta
-\end{align*}
-which indicates that, in matching $N$, $\alpha$ has been matched \& $\beta$ is yet to 
-be matched where
-\begin{itemize}
-    \item $N$ is a nonterminal symbol,
-    \item $\alpha$ \& $\beta$ are possibly empty sequences of (terminal \& nonterminal) 
-    symbols such that $N \rightarrow \alpha\ \beta$ is a production of the grammer, \&
-    \item $\bullet$ marks the current position in matching the right side.
-\end{itemize}
-
-\subsubsubsubsection{Parsing Automaton}
-An LR(0) parsing automaton consists of
-\begin{itemize}
-    \item a finite set of states, each of which consists of a set of LR(0) parsing items, \&
-    \item transitions between states, each of which is labelled by a transition symbol.
-\end{itemize}
-Each state in an LR(0) parsing automaton must have only one associated parsing action.
-
-\subsubsubsubsection{Automaton States}
-If a state has an LR(0) item of the form
-\begin{align*}
-    N &\rightarrow \alpha \bullet M \beta \\
-\end{align*}
-where the nonterminal $M$ has productions
-\begin{align*}
-    M &\rightarrow \alpha_1 \\
-    M &\rightarrow \alpha_2 \\
-    &\vdots \\
-    M &\rightarrow \alpha_m \\
-\end{align*}
-then the state also includes the derived items
-\begin{align*}
-    M &\rightarrow \bullet \alpha_1 \\
-    M &\rightarrow \bullet \alpha_2 \\
-    &\vdots \\
-    M &\rightarrow \bullet \alpha_m
-\end{align*}
-
 \subsubsubsubsection{Goto States}
 If a state $s_i$ has an LR(0) item of the form
 \begin{align*}
