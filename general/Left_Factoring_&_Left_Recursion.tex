@@ -1,8 +1,6 @@
 \subsection{Left Factoring \& Left Recursion}
 
 \subsubsection{Left Factoring Productions}
-Not all EBNF grammars are suitable for Recursive-Descent Parsing, 
-however, sometimes we can rewrite them into a form that is suitable.
 
 \subsubsubsection{Left Factor Rewriting Rule}
 To remove the left factor from
@@ -10,27 +8,31 @@ To remove the left factor from
     A \rightarrow \alpha\ \beta\ |\ \alpha\ \gamma,
 \end{align*}
 we can rewrite the production using an aditional nonterminal $A'$ as
-\begin{align*}
-    A &\rightarrow \alpha\ A'\\
-    A' &\rightarrow \beta\ |\ \gamma
-\end{align*}
+\begin{equation*}
+    \begin{aligned}[c]
+        A &\rightarrow \alpha\ A'
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        A' &\rightarrow \beta\ |\ \gamma
+    \end{aligned}
+\end{equation*}
 \subsubsection{Left Recursive Productions}
-A production of the form
-\begin{align*}
-    E \rightarrow E\ +\ T\ |\ T
-\end{align*}
-is not suitable for RDP because the left recursion in the grammar leads to an infinite recursion.
-
 \subsubsubsection{Immediate Left Recursion Rewriting Rule (Simple)}
 To remove the left recursion from
 \begin{align*}
     A \rightarrow A\ \alpha\ |\ \beta,
 \end{align*}
 we can rewrite the production as
-\begin{align*}
-    A &\rightarrow \beta\ A'\\
-    A' &\rightarrow \epsilon\ |\ \alpha\ A'
-\end{align*}
+\begin{equation*}
+    \begin{aligned}[c]
+        A &\rightarrow \beta\ A'
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        A' &\rightarrow \epsilon\ |\ \alpha\ A'
+    \end{aligned}
+\end{equation*}
 
 \subsubsubsection{Immediate Left Recursion Rewriting Rule (General)}
 To remove the left recursion from the general case
@@ -49,16 +51,30 @@ which allows us to rewrite the production as follows,
 
 \subsubsubsection{Indirect Left Recursion Rewriting Rule}
 The following productions have indirect recursion from $A \rightarrow B \rightarrow C \rightarrow A$.
-\begin{align*}
-    A &\rightarrow B\ \alpha\\
-    B &\rightarrow C\ \beta\\
-    C &\rightarrow A\ \gamma_1\ |\  \gamma_2
-\end{align*}
+\begin{equation*}
+    \begin{aligned}[c]
+        A &\rightarrow B\ \alpha
+    \end{aligned}
+    \quad 
+    \begin{aligned}[c]
+        B &\rightarrow C\ \beta
+    \end{aligned}
+    \quad
+    \begin{aligned}[c]
+        C &\rightarrow A\ \gamma_1\ |\  \gamma_2
+    \end{aligned}
+\end{equation*}
+
 To remove the recursion we can first collapse $B$ into $A$ as follows.
-\begin{align*}
-    A &\rightarrow C\ \beta\ \alpha\\
-    C &\rightarrow A\ \gamma_1\ |\ \gamma_2
-\end{align*}
+\begin{equation*}
+    \begin{aligned}[c]
+        A &\rightarrow C\ \beta\ \alpha
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        C &\rightarrow A\ \gamma_1\ |\ \gamma_2
+    \end{aligned}
+\end{equation*}
 Then we can collapse $C$ into $A$.
 \begin{align*}
     A &\rightarrow (A\ \gamma_1\ |\  \gamma_2)\ \beta\ \alpha\\
@@ -66,7 +82,12 @@ Then we can collapse $C$ into $A$.
     A &\rightarrow A\ \gamma_1\ \beta\ \alpha\ |\ \gamma_2\ \beta\ \alpha
 \end{align*}
 This now leaves a simple direct left recursion which we can remove as follows.
-\begin{align*}
-    A &\rightarrow \gamma_2\ \beta\ \alpha\ A'\\
-    A' &\rightarrow \gamma_1\ \beta\ \alpha\ A'
-\end{align*}
+\begin{equation*}
+    \begin{aligned}[c]
+        A &\rightarrow \gamma_2\ \beta\ \alpha\ A'\\
+    \end{aligned}
+    \qquad 
+    \begin{aligned}[c]
+        A' &\rightarrow \gamma_1\ \beta\ \alpha\ A'
+    \end{aligned}
+\end{equation*}

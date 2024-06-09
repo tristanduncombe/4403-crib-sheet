@@ -1,67 +1,28 @@
 \subsubsection{Objects}
-\begin{itemize}
-    \item Objects are allocated dynamiccally on the heap.
-    \item The lifetime of an object may be longer than the life time of the 
-    method that allocated the object.
-    \item Each field in an object is at a fixed offset from the start of 
-    every instance in the heap
-\end{itemize}
+Each field in an object is at a fixed offset from the start of 
+every instance in the heap.
 
 \subsubsubsection{Subclassing}
-\textbf{class} S \textbf{extends} T
-\begin{itemize}
-    \item subclass S inherits all the fields of T and all the methods of T
-    \item the offsets of the inherited fields are the same within S
-    \item aditional fields of S follow the inherited fields and have fixed 
-    offsets from the start
-    \item if a field f is declared in S, but f is already a field of T,
-    the new field is added and the old field is masked by the new field and 
-    accessed with super.f
-\end{itemize}
-
-\subsubsubsubsection{Dynamic Dispatch}
-\textbf{class} S \textbf{extends} T
-\begin{itemize}
-    \item subclass S inherits all the methods of T and can add its own
-    \item it may override the methods of T with new implementations
-    \item a variable declared to be type T has a static type of T and a dynamic 
-    type that is either T or some subtype of T (unless it is null)
-    \item when a (non-static) method is called it is the dynamic type of the 
-    object referenced that determines which method is called
-\end{itemize}
+Aditional fields follow the inherited fields \& have fixed 
+offsets from the start. Fields that are redeclared replace the 
+previously declared field at the same offset.
 
 \subsubsubsubsection{Dynamic Dispatch Table}
-Each class has a Dynamic Dispatch Table
 \begin{itemize}
     \item it has an entry for every method of the class (including inherited 
     methods)
     \item the entry gives the address of the code for the method
     \item the entries are at a fixed offset from the start of the dynamic 
     dispatch table
-    \item the entries for inherited and overridden methods are at the same 
+    \item the entries for inherited \& overridden methods are at the same 
     offsets as in the superclass
 \end{itemize}
-Each object has a reference to the dynamic dispatch table for its dynamic type
-and is referenced at runtime to determined which method is used.
-
 \image{Dynamic Dispatch Table.png}
 
 \subsubsubsubsection{This}
-\begin{itemize}
-    \item \textbf{this} is passed as an additional implicit parameter to the 
-    method
-\end{itemize}
-
-\subsubsubsubsection{Instanceof}
-\begin{itemize}
-    \item follows parent link of DDT of type of x until type T found or end reached
-\end{itemize}
+\textbf{this} is passed as an additional implicit parameter to each method.
 
 \subsubsubsubsection{Static Fields \& Methods}
-Static fields and methods are resolved statically (at compile time).
-\begin{itemize}
-    \item there is one instance of a static field for a whole class
-    \item that instance is shared by all objects of that class
-    \item static methods are not called on an object and hence they 
-    do not have an object reference as an implicit this parameter
-\end{itemize}
+Static fields \& methods are resolved statically (at compile time). Static
+methods are not called on an object \& hence they do not have an object 
+reference as an implicit this parameter.

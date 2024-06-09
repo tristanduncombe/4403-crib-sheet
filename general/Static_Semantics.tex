@@ -8,37 +8,17 @@ $T_1 \rightarrow T_2$ indicates a mapping from an argument type $T_1$ to a resul
 $T_1 \times T_2$ is the type consisting of all pairs with first element of type $T_1$ and 
 second element of type $T_2$.
 
-\subsubsubsection{Reference Types}
-A variable $x$ is a refererence to the value of $x$, hence we use $ref(T)$ which can be 
-implicitly dereferences with Rule 3.6.
-
 \subsubsection{Well-typed Expressions}
-Expressions are defined in terms of integers, identifies, arithmetic and relational operators, 
-and sub-expressions.
-
 \subsubsubsection{Type Inferences}
-Because expressions may contain identifiers, we need the context of a symbol table (represented 
-by $syms \in \textbf{id} \rightarrow SymEntry$).
-The domain of the symbol table is $\textbf{dom}(syms)$.
-
 To state that the expression \textbf{e} is well typed in the context of the symbol table and has 
 type $T$, we write $syms \vdash \textbf{e} : T$.
 
-The rules are of the form of a possibly empty list of premises (above a horizontal line) followd by 
-a consequent type inference below the line.
-
 \subsubsubsection{Type Coercion}
-We can write rules which allow us to implicitly coerce types from $T_1$ to $T_2$ if required. For 
-example, the dereference rule (Rule 3.6).
-
-\subsubsubsection{Type Derivations}
-An expression is well typed provided one can apply one of the type inference rules to deduce its
-type and all of the presmises of the infrerence rule are valid. If any premises are type inferences
-then they must be shown to be valid in a similar fashion.
+We can write rules which allow us to implicitly coerce types from $T_1$ to $T_2$ if required. 
+E.g. the dereference rule (3.6).
 
 \subsubsubsection{Well-formed statements}
-Statements are defined in terms of expressions and sub-statements. Whether or not a statement is well 
-formed depends on the context of the symbol table.
+To state a statement is well formed, we write
 \begin{gather*}
     syms \vdash WFStatement(\textbf{s})
 \end{gather*}
@@ -48,20 +28,19 @@ We use an inference of the form
 \begin{gather*}
     syms \vdash WFDeclaration(\textbf{d})
 \end{gather*}
-to state that, in context $syms$, the declaratio \textbf{d} is well
+to state that the declaration \textbf{d} is well
 formed, and
 \begin{gather*}
     entry(syms,\textbf{d}) = ent
 \end{gather*}
-to state that its corresponding symbol table entry is $ent$.
+to state its corresponding syms entry is $ent$.
 
 \subsubsubsection{Well-formed constant expressions}
-To determine the value of an expression, we use an inference of the form
+We use an inference of the form
 \begin{gather*}
     syms \vdash \textbf{c} \xrightarrow{e} v
 \end{gather*}
-to state that the constant expression \textbf{c} evaluates to the value $v$ in the context 
-of $syms$.
+to state that the constant expression \textbf{c} evaluates to the value $v$.
 
 \subsubsubsection{Well-formed blocks}
 The notation $syms \oplus \{ \textbf{id} \in X \bullet (\textbf{id} \mapsto ent)\}$ 
