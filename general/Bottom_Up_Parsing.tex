@@ -25,17 +25,6 @@ If there are multiple items in $s_i$ with the same $x$ immediately to the right 
 $\bullet$ then the goto state $s_j$ includes all those items but with the $\bullet$ after 
 that occurence of $x$ rather than before it.
 
-\subsubsubsubsection{Actions}
-An LR(0) item of the form
-\begin{itemize}
-    \item $N \rightarrow \alpha \bullet a \beta$ where $a$ is a terminal symbol, indicates 
-    the state containing the item has a shift  \textbf{parsing} action
-    \item $S' \rightarrow S \bullet$ where $S'$ is the (introduced) start symbol for the 
-    grammer, inidcates the state containing the item has an  \textbf{accept} action
-    \item $N \rightarrow \alpha \bullet$ where $N$ is not the (introduced) start symbol for 
-    the grammar, indicates the state containing the item has a parsing action 
-    \textbf{reduce $N \rightarrow \alpha$}
-\end{itemize}
 A shift action at end-of-file is an error, as is an accept action when the input is not at 
 end-of-file.
 
@@ -53,7 +42,7 @@ end-of-file.
         A \rightarrow a
     \end{aligned}
 \end{equation*}
-\image{LR(0) Automaton Example.png}
+\image[100px]{LR(0) Automaton Example.png}
 \begin{center}
     \begin{tabular}{|lr|l|}
         \hline
@@ -119,36 +108,6 @@ where the nonterminal M has productions
 \end{align*}
 where if $\beta$ is not nullable $T' = First(\beta)$ \& if $\beta$ is nullable, 
 $T' = First(\beta) - \{\epsilon\} \cup T$.
-
-\subsubsubsubsection{Parsing Actions}
-An LR(1) item of the form
-\begin{itemize}
-    \item $[N \rightarrow \alpha \bullet a \beta, T]$, where $a$ is a terminal symbol, 
-    indicates the state containing the item has a \textbf{shift} parsion action if the
-    next input $x$ is $a$
-    \item $[S' \rightarrow \S \bullet, \$]$, where $S'$ is the added start symbol for 
-    the grammar, indicates the state containing the item has an \textbf{accept} action 
-    if there is no more input.
-    \item $[N \rightarrow \alpha \bullet, T]$, where $N$ is not $S'$, indicates the state 
-    containing the item has a parsing action \textbf{reduce $N \rightarrow \alpha$} if 
-    the next input $x$ is in $T$.
-\end{itemize}
-
-\subsubsubsubsection{Example}
-\begin{equation*}
-    \begin{aligned}[c]
-        S \rightarrow E
-    \end{aligned}
-    \qquad 
-    \begin{aligned}[c]
-        E \rightarrow E + n
-    \end{aligned}
-    \qquad 
-    \begin{aligned}[c]
-        E \rightarrow n
-    \end{aligned}
-\end{equation*}
-\image{LR(1) Automaton Example.png}
 
 \subsubsubsubsection{Parsing Action Conflicts}
 If a state in an LR(1) parsing automaton has more than one action for a look-ahead 
