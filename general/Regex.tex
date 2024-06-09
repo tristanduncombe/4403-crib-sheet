@@ -1,0 +1,66 @@
+\subsection{Regular Expressions}
+\subsubsubsection{Deterministic Finite Automaton (DFA)}
+A DFA, $D$, consists of
+\begin{itemize}
+    \item A finite alphabet of symbols, $\Sigma$
+    \item A finite set of states, $S$
+    \item A transition function, $T : \Sigma \times S \rightarrow S$, which maps an (input) symbol and a (current) state to the (next) state; the function $T$ may not be defined for all pairs of symbols and state. 
+    \item A start state, $s_0$ 
+    \item A set of final (or accepting) states, $F$
+\end{itemize}
+
+\image[100px]{DFA.png}
+
+\subsubsubsection{NFA}
+
+\subsubsubsection{From an Regex to a NFA}
+In the translation from a regular expression, $r$, to an NFA, thegenerated NFA has a few properties that do not necessarily hold for an arbitrary NFA (i.e. one not generated from a regular expression).
+\begin{itemize}
+    \item The NFA has a single final (accepting) state.
+    \item The initial state of the NFA only has outgoing transitions.
+    \item The final state only has incoming transitions.
+\end{itemize}
+The translation rules preserve these properties.
+
+\subsubsubsection{From NFA to DFA}
+A DFA cannot have 
+\begin{itemize}
+    \item more than one transition leaving a state on the same symbol
+    \item any empty transitions
+\end{itemize}
+An NFA N can be translated to an equivalent DFA D.
+\begin{itemize}
+    \item equivalent in the sense that they accept the same languages, i.e., $\pazocal{L}(N) = \pazocal{L}(D)$.
+\end{itemize}
+
+\subsubsubsection{From NFA to DFA}
+An NFA is transformed to a DFA in which the labels on the states of the DFA are sets of states from the NFA.
+The sets of states that label a DFA state are formed by collecting all the states that can be reached from NFA states by empty transitions. 
+
+\subsubsubsection{Empty Closure of a state}
+Empty Closure of a state
+The empty closure of a state $x$ in an NFA $N$, $\epsilon$-closure$(x, N)$, is
+the set of states in $N$ that are reachable from x via any number
+of empty transitions
+
+\subsubsubsection{Empty Closure of a set of states}
+The empty closure of a set of states $X$ in an NFA $N$, $\epsilon$-closure$(X , N)$, is the set of states in $N$ that are reachable from any of the states in $X$ via any number of empty transitions. 
+
+\subsubsection{From NFA to DFA}
+
+The following process is repeated until there are no unmarked DFA states left:
+\begin{itemize}
+    \item An unmarked DFA state $S$ is selected (the first one is $S_0$).
+    \item For each symbol $a$,
+    \begin{itemize}
+        \item we consider the set of states that can be reached from any state in $S$ by a transition on $a$; call this set of states $X$.
+        \item If $X$ is nonempty, we add a new state to the DFA labeled with $X' = \epsilon\text{-closure}(X, N)$, unless a state with that label already exists, in which case it is reused.
+        \item A transition from $S$ to $X'$ on $a$ is added to the DFA.
+    \end{itemize}
+    \item The state $S$ is marked as having been processed.
+\end{itemize}
+
+\subsubsubsection{Minimising a DFA}
+To minimise the DFA we merge states that have the same
+transition to the equivalent states. For the example, A, B and C
+are equivalent.

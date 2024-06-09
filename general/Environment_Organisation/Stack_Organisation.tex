@@ -1,0 +1,142 @@
+\subsubsection{Stack Organisation}
+\subsubsubsection{Definition}
+A stack machine consists of the following chunks of memory.
+\begin{itemize}
+    \item \textbf{stack} - the portion of memory used for both calculating the values of 
+    expressions as well as storing activation records for every active procedure call.
+    \item \textbf{heap} - the portion of memory for dynamic allocation of Objects.
+    \item \textbf{code space} - the portion of memory where the machine instructions are 
+    stored.
+\end{itemize}
+The stack and heap are stored in one contiguous area of memory. The stack grows from the 
+bottom (address 0) and the heap grows down from the top.
+
+The machine has four special registers:
+\begin{itemize}
+    \item \textbf{stack pointer} - contains the address for the top of the stack + 1
+    \item \textbf{stack limit} - contains the address of the upper limit for the stack 
+    and the bottom of the heap
+    \item \textbf{frame pointer} - contains the address of teh stack frame for the 
+    current procedure
+    \item \textbf{program counter} - contains the address of the next machine instruction
+\end{itemize}
+
+\subsubsubsection{Procedures}
+Each time a procedure is entered via a call, the machine must keep track of information 
+such as the return address and the local variables for that call in a procedure frame. 
+This frame is stored on the stack.
+
+A pointer to the current procedures' frame is stored in a globally known location.
+\subsubsubsubsection{Calling a Procedure}
+\begin{itemize}
+    \item parameters to the procedure are pushed to the stack
+    \item a static link is pushed onto the stack
+    \item the current frame pointer is pushed onto the stack to create the dynamic link
+    \item the frame pointer is set so that it contains the address of the start of the 
+    new stack frame
+    \item the current value of the program counter is pushed onto the stack to form the 
+    return address
+    \item the program counter is set to the address of the procedure
+    \item space is allocated on the stack for any local variables
+\end{itemize}
+\begin{center}
+    \image[\columnwidth/2]{Stack Frame.png}
+\end{center}
+
+\subsubsubsubsection{Returning From a Procedure}
+\begin{itemize}
+    \item the program counter is set to the return address in the current activation record
+    \item the frame pointer is set to the dynamic link
+    \item the stack pointer is set so that all the space used by the stack frame (but not 
+    parameters) is popped from the stack
+    \item execution continues at the instruction addressed by the (restored) program counter
+    \item after return, the calling procedure handles deallocating any parameters
+\end{itemize}
+
+\subsubsubsubsection{Local Variables}
+Local variables are stored within the procedures frame. They are accessed by an offset 
+relative to the frame pointer.
+
+\subsubsubsubsection{Non-local Variables}
+To allow access to variables outside of the enclosing procedure, the stack frame for a 
+procedure includes a \textit{static link} which contains the address of the stack frame 
+for the enclosing procedure (the procedure in which the enclosed procedure is defined).
+
+To access the non-local variable $n$ from a procedure, we continuesly access the static link 
+of the enclosing procedures until we are in the procedure in which $n$ is defined. We can then
+add the offset to the variable $n$ to get the final address of the non-local variable.
+
+\subsubsubsection{Parameters}
+\begin{itemize}
+    \item \textbf{Formal parameters} are the paremeters used in the declaration of the procedure 
+    in its header.
+    \item \textbf{Actual parameters} are the actual parameters passed to a procedure on a call.
+\end{itemize}
+\subsubsubsubsection{Call-by-value}
+\begin{itemize}
+    \item parameters are expressions that are evaluated and coerced to the type of the formal 
+    paramter.
+    \item the values of the parameters are loaded onto the stack as part of the calling sequence.
+    \item Once the procedure is called and the stack frame has been established, the formal 
+    parameters of the procedure can be accessed like local variables
+    \item Accesses to the formal parameter access the location on the stack containing the value of the
+    corresponding actual parameter.
+\end{itemize}
+
+\subsubsubsubsection{Call-by-const}
+The formal parameter acts as a read-only local variable that is assigned the value of the actual 
+parameter expression.
+
+\subsubsubsubsection{Call-by-result}
+The formal parameter acts as a local variable whose final value is assigned to the actual parameter 
+variable.
+
+\subsubsubsubsection{Call-by-value-result}
+A single parameter acts as both a value and a result parameter.
+
+\subsubsubsubsection{Call-by-reference}
+The formal parameter is the address of the actual parameter variable. All references to the formal 
+parameter are applied to the actual parameter variable immediately.
+
+\subsubsubsubsection{Call-by-sharing}
+The same as call-by-value, but what is passed is a reference to an object (e.g. Java) rather than 
+the values of the object.
+
+\subsubsubsubsection{Call-by-name}
+The actual parameter expression is evaluated every time the formal parameter is accessed.
+
+\subsubsubsubsection{Passing Procedures as Parameters}
+The address of the procedure as well as the static link for the procedure's environment is passed.
+
+\subsubsubsection{Function Results}
+\begin{itemize}
+    \item A function can return a result that can be used as part of an expression.
+    \item The result of a function call should be left on top of the stack after the stack frame 
+    is removed.
+    \item To ensure the returned value is before the stack frame, free space is allocataed for 
+    the result before the parameters are loaded onto the stack and the frame is set up.
+\end{itemize}
+
+\subsubsubsubsection{Returning Procedures}
+Return the address of the procedure as well as the static link for the procedures environment.
+This requires the environment of the returned procedure to be maintained which makes the simple
+stack-based allocation of frames insufficient.
+
+\subsubsubsection{Variable Aliasing}
+\subsubsubsubsection{Parameter Aliasing}
+In languages with call-by-reference, the same variable can be passed to two (or more) different
+parameters leading to variable aliasing.
+
+\subsubsubsubsection{Global Variable Aliasing}
+If a variable is passed as a reference parameter to a procedure that can access the same variable
+as a global variabel, then within the procedure there are two aliases for the same variable.
+
+\subsubsubsection{Pointer Aliasing}
+\subsubsubsubsection{Parameter Aliasing}
+In languages with call by sharing, the same reference to an object can be passed to two different 
+parameters leading to one having two aliases for the same reference.
+
+\subsubsubsubsection{Global Variable Aliasing}
+If a reference that is passed as a parameter to a procedure is also directly accessible as a 
+global variable from the procedure. this leads to the procedure having two aliases for the one 
+reference.

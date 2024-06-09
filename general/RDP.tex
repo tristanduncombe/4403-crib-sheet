@@ -1,161 +1,29 @@
 \subsection{Recusive-Descent Parsing}
-\subsubsection{Backus-Naur Form (BNF)}
-Allows a context-free grammar to be described by a set of productions of the form
-$N \rightarrow \alpha$
-Where $N$ is a nonterminal symbol and $\alpha$ is a (possibly empty) sequence of terminal and nonterminal symbols
-
-The set of productions:
-
-$N \rightarrow \alpha_1$ \\
-$N \rightarrow \alpha_2$ \\
-$\ldots$ \\[0.1cm]
-$N \rightarrow \alpha_n$
-
-can be writen as
-$N \rightarrow \alpha_1 | \alpha_2 | \ldots | \alpha_n$
-
-\subsubsection{Extended BNF (EBNF)}
-Extends BNF to allow:
-
-An \emph{optional} syntatic construct [in square brackets]
-
-$RelCondition \rightarrow Exp \ [RelOp \ Exp]$ \newline
-
-A \emph{reptition} construct {in curly braces}\newline
-
-$StatementList \rightarrow Statement \ \{SEMICOLON \ Statement \}$ \newline
-
-
-The extended notation does not add any expressive power - any EBNF grammar can be converted to a BNF grammar\dots
-
 \subsubsection{Translating EBNF to BNF}
 
 Replace optional construct $[S]$ by a new nonterminal $OptS$:
-
-$OptS \rightarrow S | \epsilon$ \newline
+\begin{align*}
+    OptS \rightarrow S | \epsilon
+\end{align*}
 For example, we can rewrite
-$RelCondition \rightarrow Exp \ [RelOp \ Exp]$ \newline
+\begin{align*}
+    RelCondition \rightarrow Exp \ [RelOp \ Exp]
+\end{align*}
 as
-
-$RelCondition \rightarrow Exp \ OptRelExp$
-$OptRelExp \rightarrow RelOp \ Exp | \epsilon$
-
-Replace grouping construct ( $S$ ) by a new nonterminal $GrpS$:
-
-$GrpS \rightarrow S$
-
+\begin{align*}
+    RelCondition \rightarrow Exp \ OptRelExp \\
+    OptRelExp \rightarrow RelOp \ Exp | \epsilon
+\end{align*}
+Replace grouping construct ($S$) by a new nonterminal $GrpS$:
+\begin{align*}
+    GrpS \rightarrow S
+\end{align*}
 For example, we can rewrite
-
-$RepF \rightarrow (TIMES \ | \ DIVIDE) \ Factor \ RepF \ | \epsilon$
-
+\begin{align*}
+    RepF \rightarrow (TIMES \ | \ DIVIDE) \\ \ Factor \ RepF \ | \epsilon
+\end{align*}
 as 
-
-$RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon$ \\
-$TermOp \rightarrow TIMES \ | \ DIVIDE$
-
-\subsubsection{Recursive-descent parsing}
-A recursive-descent parser is a recursive program to recognise sentences in a language:
-\begin{itemize}
-    \item Input is a stream of lexical tokens, represented by tokens of type TokenStream. 
-    \item Each nonterminal symbol $N$ has a method $parseN$ that:
-    \begin{itemize}
-        \item recognises the longest string of lexcial tokens in the input stream, starting from the current token, derivable from $N$;
-        \item as it parses the input it moves the current location forward;
-        \item when it has finished parsing N, the current token is the token immediately following the last token matched as part of $N$ (which may be at the end-of-file token).
-    \end{itemize}
-\end{itemize}
-
-\subsubsection{matching a list of alternatives: example}
-\begin{scriptsize}
-$Factor \rightarrow \ $ \\ 
-$LPAREN \ RelCondition \ RPAREN \ |$ \\
-$\ NUMBER \ |$ \\
-$\ LValue $
-\begin{lstlisting}[language=Java]
-void parseFactor (){
-    if(tokens.isMatch(Token.LPAREN)){
-        tokens.match(Token.LPAREN);
-        parseRelCondition();
-        tokens.match(Token.RPAREN);
-    } else if(tokens.isMatch(Token.NUMBER)){
-        tokens.match(Token.NUMBER);
-    } else if
-        (tokens.isMatch(Token.IDENTIFIER)){
-        parseLValue();
-    } else {
-        errors.error ("Syntax error");
-    }
-}
-\end{lstlisting}
-\end{scriptsize}
-
-\subsubsection{matching an optional construct: example}
-\begin{scriptsize}
-$RelCondition \rightarrow \ Exp \ [ \ RelOp \ Exp \ ]$
-\begin{lstlisting}[language=Java]
-void parseRelCondition(){
-    parseExp();
-    if(tokens.isIn(REL_OPS_SET)){
-        parseRelOp();
-        parseExp();
-    }
-}
-\end{lstlisting}
-\end{scriptsize}
-
-\subsubsection{matching a repetition construct: example}
-\begin{scriptsize}
-$Term \rightarrow \ Factor \ { \ ( \ TIMES \ | \ DIVIDE \ ) \ Factor \ }$
-\begin{lstlisting}[language=Java]
-void parseTerm(){
-    parseFactor();
-    while(tokens.isIn(TERM_OPS_SET)){
-        if(tokens.isMatch(Token.TIMES)){
-            tokens.match(Token.TIMES);
-        } else if 
-            (tokens.isMatch(Token.DIVIDE)){
-            tokens.match(Token.DIVIDE);
-        } else {
-            fatal("Internal Error");
-            // unreachable
-        }
-        parseFactor();
-    }
-}
-\end{lstlisting}
-\end{scriptsize}
-
-\subsubsection{recovery strategy for matching a single token}
-\begin{scriptsize}
-\begin{lstlisting}[language=Java, emph={STATEMENT_START_SET}, emphstyle=\textbf]
-void parseWhileStatement(){
-    tokens.match(Token.KW _WHILE);
-    parseCondition();
-    tokens.match(Token.KW _DO, 
-        STATEMENT_START_SET );
-    parseStatement();
-}
-\end{lstlisting}
-\end{scriptsize}
-
-Generally, it is  
-\begin{lstlisting}[language=Java]
-tokens.match(expected, follows)
-\end{lstlisting}
-
-maybe add parsing recovery sets here?
-
-\subsubsection{LL(1) grammars}
-We indicated above that there are some restrictions on gram-
-mars to ensure they are suitable for recursive-descent predic-
-tive parsing. The class of grammars that are suitable is re-
-ferred to as LL(1), where the first “L” refers to the fact that
-the parsing of the input is from Left to right, the second “L”
-refers to the fact that they produce a Leftmost derivation se-
-quence, and the “1” indicates that their parsers use one symbol
-lookahead (i.e., the current token is the lookahead).
-
-Definition 1 (LL(1) Grammar) A BNF grammar is LL(1) if
-for each nonterminal, N, the first sets for each pair of alter-
-native productions for N are disjoint, and if N is nullable,
-First(N) and Follow(N) are disjoint
+\begin{align*}
+    RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon \\
+    TermOp \rightarrow TIMES \ | \ DIVIDE
+\end{align*}

@@ -11,6 +11,10 @@
 \usepackage{listings}
 \usepackage{calrsfs}
 \usepackage{enumitem}% http://ctan.org/pkg/enumitem
+\usepackage{graphicx}
+\usepackage{ amssymb }
+
+\graphicspath{ {./images/} }
 \setlist[itemize]{noitemsep, topsep=0pt, leftmargin=*}
 
 \DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
@@ -77,6 +81,10 @@
 
 \newcommand{\imp}{\Rightarrow}
 
+\newcommand{\image}[2][\columnwidth]{%
+    \includegraphics[width=#1]{#2}%
+}
+
 % Define BibTeX command
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
@@ -101,28 +109,31 @@
 
 % multicol parameters
 % These lengths are set only within the two main columns
-%\setlength{\columnseprule}{0.25pt}
+\setlength{\columnseprule}{0.25pt}
 \setlength{\premulticols}{1pt}
 \setlength{\postmulticols}{1pt}
-\setlength{\multicolsep}{1pt}
-\setlength{\columnsep}{2pt}
+\setlength{\multicolsep}{0.5pt}
+\setlength{\columnsep}{0.5pt}
 \setlength{\tabcolsep}{2pt}
 \setlength{\abovedisplayskip}{2pt}
 \setlength{\belowdisplayskip}{0pt}
 \setlength{\topsep}{0pt}
 \setlength{\partopsep}{0pt}
-
-\begin{center}
-     \Large{\textbf{COMP4403 Crib Sheet}} \\
-\end{center}
-
-\input{./general/Parsing.tex}
+\setlength{\baselineskip}{5pt}
+\setlength{\fboxsep}{0.5pt}
 
 \input{./general/RDP.tex}
 
 \input{./general/First_&_Follow.tex}
 
+\input{./general/Bottom_Up_Parsing.tex}
+
 \input{./general/Left_Factoring_&_Left_Recursion.tex}
+
+\input{./general/Runtime_Environment.tex}
+
+\input{./general/Regex.tex}
+
 
 \scriptsize
 
