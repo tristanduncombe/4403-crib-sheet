@@ -1,33 +1,6 @@
 \subsection{Bottom Up Parsing}
 
 \subsubsection{Shift/Reduce Parsing}
-Makes use of a parse stack \& has three actions:
-\begin{itemize}
-    \item \textbf{shift} - push the next input symbol onto the stack,
-    \item \textbf{reduce} - if a sequence of symbols on the top of the stack, $\alpha$, 
-    matches the right side of some production $N \rightarrow \alpha$, then the sequence 
-    $\alpha$ on top of the stack is replaced by $N$.
-    \item \textbf{accept} - if the stack contains just the start symbol \& there is no
-    input left, the input has been recognised \& is accepted.
-\end{itemize}
-
-\subsubsubsubsection{Goto States}
-If a state $s_i$ has an LR(0) item of the form
-\begin{align*}
-    N \rightarrow \alpha \bullet x \beta
-\end{align*}
-where $x$ is either a terminal symbol or a nonterminal symbol, then there is a goto state, 
-$s_j$, from the state $s_1$ on $x$, \& $s_j$ includes a kernel item of the form
-\begin{align*}
-    N \rightarrow \alpha x \bullet \beta
-\end{align*}
-If there are multiple items in $s_i$ with the same $x$ immediately to the right of the 
-$\bullet$ then the goto state $s_j$ includes all those items but with the $\bullet$ after 
-that occurence of $x$ rather than before it.
-
-A shift action at end-of-file is an error, as is an accept action when the input is not at 
-end-of-file.
-
 \subsubsubsubsection{Example Table}
 \begin{equation*}
     \begin{aligned}[c]
@@ -68,16 +41,6 @@ there is a parsing action conflict.
 A grammar is LR(0) if none of the states in its parsing 
 automaton contains a conflict.
 
-\subsubsubsection{LR(1) Grammars}
-\subsubsubsubsection{Parsing Automaton}
-The kernal item of the initial state is
-\begin{align*}
-    [S' \rightarrow \bullet S, \$]
-\end{align*}
-where $S$ is the start symbol of the grammar \& we introduce a fresh replacement start 
-symbol $S'$ \& production $S' \rightarrow S$. This fresh production is used to determine 
-when parsing has completed.
-
 \subsubsubsubsection{Derived Items}
 If a state has an LR(1) item of the form
 \begin{align*}
@@ -101,12 +64,3 @@ If a state in an LR(1) parsing automaton has more than one action for a look-ahe
 terminal symbol, there is a parsing action conflict.
 
 A grammar is LR(1) if none of the states in its parsing automaton contains a conflict.
-
-
-\subsubsubsection{LALR(1) Parsing}
-\begin{itemize}
-    \item An LALR(1) parsing automaton can be formed from an LR(1) parsing automaton by 
-    merging the states and lookahead sets that have identical sets of productions
-    \item A grammar is LALR(1) if none of the states in its LALR(1) parsing automaton contains 
-    a conflict.
-\end{itemize}
