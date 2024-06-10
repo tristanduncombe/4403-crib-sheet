@@ -48,10 +48,6 @@ stands for the symbol table $syms$ but with the entried for all the indentifiers
 X added (or replaced) by teh vlaue of the expression $ent$.
 
 \subsubsubsection{Examples}
-Rule 3.1 Integer value
-\begin{gather*}
-    syms \vdash \textbf{n} : int
-\end{gather*}
 Rule 3.2 Symbolic constant
 \begin{gather*}
     \textbf{id} \in \textbf{dom}(syms)\\
@@ -99,4 +95,18 @@ Rule 3.8 Narrow subrange
     T \in \{int,bolean\}\\
     \hline
     syms \vdash \textbf{e} : subrange(T, i, j)
+\end{gather*}
+
+Q4b
+\begin{gather*}
+    syms \vdash \textbf{d} : disribution(T)\\
+    T \in dom(syms)\\
+    syms(T) = TypeEntry(enumeration(ids))\\
+    id_v \neq \textbf{id}_p\\
+    syms \oplus \ \{\textbf{id}_v \rightarrow VarEntry(ref(T)), \\
+    \textbf{id}_p \rightarrow VarEntry(ref(fraction))\} \\
+    \vdash \textbf{WFStatement(body)}\\
+    \hline
+    syms \vdash \textbf{WFStatement}( \\
+    \textbf{for}(\textbf{id}_v, \textbf{id}_p) : \textbf{d do body})
 \end{gather*}

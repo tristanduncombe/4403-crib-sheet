@@ -1,29 +1,6 @@
 \subsection{Recusive-Descent Parsing}
 \subsubsection{Translating EBNF to BNF}
 
-Replace optional construct $[S]$ by a new nonterminal $OptS$:
-\begin{align*}
-    OptS \rightarrow S | \epsilon
-\end{align*}
-For example, we can rewrite
-\begin{align*}
-    RelCondition \rightarrow Exp \ [RelOp \ Exp]
-\end{align*}
-as
-\begin{align*}
-    RelCondition \rightarrow Exp \ OptRelExp \\
-    OptRelExp \rightarrow RelOp \ Exp | \epsilon
-\end{align*}
-Replace grouping construct ($S$) by a new nonterminal $GrpS$:
-\begin{align*}
-    GrpS \rightarrow S
-\end{align*}
-For example, we can rewrite
-\begin{align*}
-    RepF \rightarrow (TIMES \ | \ DIVIDE) \\ \ Factor \ RepF \ | \epsilon
-\end{align*}
-as 
-\begin{align*}
-    RepF \rightarrow TermOp \ Factor \ RepF \ | \epsilon \\
-    TermOp \rightarrow TIMES \ | \ DIVIDE
-\end{align*}
+Replace optional construct $[S]$ by a new nonterminal $OptS$ where $OptS \rightarrow S | \epsilon$.\\
+Replace grouping construct ($S$) by a new nonterminal $GrpS$ where $GrpS \rightarrow S$.\\
+Replace repetition construct \{$S$\} by a new nonterminal $RepS$ where $RepS \rightarrow S RepF | \epsilon$.\\

@@ -24,6 +24,9 @@ by them.
     \item a phase that \textbf{marks} all the accessible objects
     \item a phase that \textbf{sweeps} up the objects left unmarked \& adds them to the 
     free list
+    \item quick since it only needs to mark memory as free (no moving required)
+    \item results in fragmentation since it doesn't compact memory
+    \item can use a lot of memory if heavily fragmented with small free areas
 \end{itemize}
 
 \subsubsubsubsection{Stop-\&-copy}
@@ -32,6 +35,9 @@ by them.
     \item memory is allocated sequentially from one space until it runs out
     \item garbage collection consists of relocating all accessible objects from the first 
     space to the second space
+    \item slow since it must copy all words from one heap to the other
+    \item operation compacts memory so low fragmentation
+    \item uses double the available memory since 2 identically sized heaps are needed
 \end{itemize}
 Overcomes memory fragmentation problems, but copying can be expensive in time.
 
@@ -43,6 +49,9 @@ spaces
     \item older objects are migrated to an old object space \& newer objects go in the a 
     new object space
     \item the newer the space, the more frequently it is garabage collected
+    \item more efficient since avoids repeatedly copying old objects
+    \item memory fragmentation low since objects are compacted when moved between generations
+    \item uses high-ish memory utilisation since multiple heaps are needed (older heaps can use less memory)
 \end{itemize}
 
 \subsubsubsubsection{Issues w/ Garbage Collection}

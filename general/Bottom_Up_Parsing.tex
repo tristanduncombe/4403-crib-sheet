@@ -33,14 +33,6 @@
     \end{tabular}
 \end{center}
 
-
-\subsubsubsubsection{Parsing Conflicts}
-If a state in an LR(0) parsing automaton has more than one action, 
-there is a parsing action conflict.
-
-A grammar is LR(0) if none of the states in its parsing 
-automaton contains a conflict.
-
 \subsubsubsubsection{Derived Items}
 If a state has an LR(1) item of the form
 \begin{align*}
@@ -58,9 +50,3 @@ where the nonterminal M has productions
 \end{align*}
 where if $\beta$ is not nullable $T' = First(\beta)$ \& if $\beta$ is nullable, 
 $T' = First(\beta) - \{\epsilon\} \cup T$.
-
-\subsubsubsubsection{Parsing Action Conflicts}
-If a state in an LR(1) parsing automaton has more than one action for a look-ahead 
-terminal symbol, there is a parsing action conflict.
-
-A grammar is LR(1) if none of the states in its parsing automaton contains a conflict.
